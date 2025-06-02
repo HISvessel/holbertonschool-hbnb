@@ -2,16 +2,31 @@
 
 ## Diagram
 
-```mermaid
+```mermaid 
 classDiagram
 class User {
   +user_name = string
-  +submit_review()
-  +remove_review()
-  +addUser
-  +removeUser
-  +makeAdmin
-  +removeAdmin
+  +first_name = string
+  +last_name = string
+  #password = string
+  #email = string
+  #password = string
+  +addUser(User)
+  +removeUser(User)
+  +submit_review(Review)
+  +remove_review(Review)
+  +makeAdmin()
+  +removeAdmin()
+}
+
+class Review {
+  +title = string
+  +comment = string
+  +review_author = User
+  +review_rating = int
+  +review_date = list[mm,dd,yyyy]
+  +submit_review(self)
+  +delete_review(self)
 }
 
 class Place {
@@ -20,21 +35,12 @@ class Place {
   +coordinates = []
   +review_rating = int
 
-  +addPlace (self, place_title, coordinates)
-  +removePlace()
+  +addPlace (Place)
+  +removePlace(Place)
   +addAmenity()
   +removeAmenity()
-  +totalAmenities() []
-  addReview()
-}
-
-class Review {
-  +review = string
-  +review_author = string
-  +review_rating = int
-  +review_date = []
-  submit_review()
-  delete_review()
+  +totalAmenities()
+  +addReview()
 }
 
 class Amenity {
@@ -42,12 +48,13 @@ class Amenity {
   +amenity_description = string
   +total_amenities = []
 
-  add_Amenity()
-  list_Amenity()
+  +add_Amenity()
+  +list_Amenity()
 }
 
-User <-- Review : submitted by
-User o--> Place : searches and reserves
-User --o Review : submits
+User <--o Review : submits
+User o--> Place : searches and books
+Place o-- User : adds and manages
 Place *..> Amenity : contains
 Place o--> Review : subject to
+User <..o Amenity : adds and lists
