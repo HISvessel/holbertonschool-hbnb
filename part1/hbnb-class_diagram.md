@@ -6,7 +6,7 @@
 classDiagram
 class User {
   +user_name = string
-  +submit_review = string
+  +submit_review()
   +remove_review()
   +addUser
   +removeUser
@@ -17,19 +17,24 @@ class User {
 class Place {
   +place_title = string
   +place_description = string
-  +lattitude = int
-  +longitude = int
+  +coordinates = []
+  +review_rating = int
 
-  +addPlace (self, place_title, lattitude, longiude)
+  +addPlace (self, place_title, coordinates)
   +removePlace()
   +addAmenity()
   +removeAmenity()
-  +totalAmenities() = []
+  +totalAmenities() []
+  addReview()
 }
 
 class Review {
   +review = string
   +review_author = string
+  +review_rating = int
+  +review_date = []
+  submit_review()
+  delete_review()
 }
 
 class Amenity {
@@ -41,7 +46,8 @@ class Amenity {
   list_Amenity()
 }
 
-User <|--- Review : gets from
-User --> Place : searches for
-User --> Review : submits
-Place --> Amenity : contains
+User <-- Review : submitted by
+User o--> Place : searches and reserves
+User --o Review : submits
+Place *..> Amenity : contains
+Place o--> Review : subject to
