@@ -5,56 +5,58 @@
 ```mermaid 
 classDiagram
 class User {
-  +user_name = string
-  +first_name = string
-  +last_name = string
-  #password = string
-  #email = string
-  #password = string
-  +addUser(User)
-  +removeUser(User)
-  +submit_review(Review)
-  +remove_review(Review)
-  +makeAdmin()
-  +removeAdmin()
-}
-
-class Review {
-  +title = string
-  +comment = string
-  +review_author = User
-  +review_rating = int
-  +review_date = list[mm,dd,yyyy]
-  +submit_review(self)
-  +delete_review(self)
+  -String first_name
+  -String last_name
+  -String email
+  -String password
+  -Boolean is_Admin
+  -DateTime created_at
+  -DateTime updated_at
+  +register() void
+  +update_profile() void
+  +delete() void
 }
 
 class Place {
-  +place_title = string
-  +place_description = string
-  +coordinates = []
-  +review_rating = int
+ -String id
+ -String title
+ -String description
+ -Float price
+ -Float longitude
+ -Float latitude
+ -DateTime created_at
+ -DateTime updated_at
+ +create() void
+ +update() void
+ +delete() void
+ +add_amenity() void
+ +remove_amenity() void
+}
 
-  +addPlace (Place)
-  +removePlace(Place)
-  +addAmenity()
-  +removeAmenity()
-  +totalAmenities()
-  +addReview()
+class Review {
+  -String id
+  -Integer rating
+  -String comment
+  -DateTime created_at
+  -DateTime updated_at
+  +create() void
+  +update() void
+  +delete() void
 }
 
 class Amenity {
-  +amenity_name = string
-  +amenity_description = string
-  +total_amenities = []
-
-  +add_Amenity()
-  +list_Amenity()
+  -String id
+  -String name
+  -string description
+  -DateTime created_at
+  -DateTime updated_at
+  +create() void
+  +update() void
+  +delete() void
 }
 
 User <--o Review : submits
 User o--> Place : searches and books
-Place o-- User : adds and manages
-Place *..> Amenity : contains
-Place o--> Review : subject to
-User <..o Amenity : adds and lists
+Place o-- User : owns
+Place *..> Amenity : includes
+Place o--> Review : has
