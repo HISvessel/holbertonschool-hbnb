@@ -1,0 +1,1 @@
+"""the integration of our facade, for interaction and connection between entities"""
