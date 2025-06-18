@@ -1,0 +1,1 @@
+"""the first creation of our place class; pending changes, as these are for structure"""

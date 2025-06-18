@@ -1,0 +1,1 @@
+"""creation of a user class; pending changes, as these are for structure"""
