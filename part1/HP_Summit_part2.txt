@@ -61,3 +61,34 @@ Y entonces, cual es el futuro de la energia de PR y de la AEE?
 5) La eneria solar es una solucion
 Entendamos esto, la solucion esta en nosotros de Home Power debido a los errores del gobierno, que ha dejado al pueblo sin alguna respuesta o alternativa tangible
 y he aqui, una empresa privada ha provisto una solucion que provee control y soluciones al pueblo. 
+
+
+
+Fecha -> 19 de junio de 2024
+Presentacion a negocios
+
+Puntos anotados hasta ahora:
+1) Investigar los requisitos de ese negocio o edificio en donde se planifica instalar
+2) Tipos de casos:
+    a) solo placa solar
+    b) solo baterias
+    c) solar y baterias(sistemas completos con inversores y transfer switch)
+    d) garantias de 25 anos no se ofrecen. Hace el caso un poco mas retante
+3) ejemplo de cotizacion; es un poco mas rapido con el sistema de SunRun, pero recuerda:
+    a) la instalacion a negocio es a traves de Home Power, no de SunRun
+    b) etapas del proyecto: 1) cotizacion, 2) contrato, 3) procesos administrativos
+    c) a causa del proceso, este tarda mas.
+    d) requiere deposito. Si el cliente decide por no optar por irse solar, se le cobrara el deposito como quiera a causa de los precios de produccion de proyecto.
+4) el proceso pasa a traves de la aprobacion de LUMA para poder instalar
+5) estudios suplementarios que pueden minimizar el tamano original de la cotizacion: ejemplo
+de 50 kW puedes terminar instalando solamente 40 si la situacion lo amerita para LUMA.
+6) Hay muchos factores que afectan el proceso de venta, instalacion y cierre. 
+
+
+Preguntas:
+1) El cliente cuenta con fondo propio para hacer reparos y mantenimientos:
+ya que no cuenta con SunRun, se asumen esos costos de mantenimientos.
+2) La propuesta es PPA o es un lease? El cliente podra llegar a aduenarse de un sistema en caso de cotizacion?
+3) A quien puede llamar el cliente para el mantenimiento del sistema: tiene que conseguir a su propio proveedor o habla con Home Power?
+4) Que requisitos pide Home Power a negocios para ser considerados a instalacion?
+5) 787-310-3811 Lyneida Cruz
