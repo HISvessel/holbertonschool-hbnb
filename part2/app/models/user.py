@@ -80,10 +80,10 @@ class User(BaseClass):
         return self._is_admin
     
     def promote_to_admin(self):
-        self.is_admin = True
+        self._is_admin = True
     
     def demote_from_amdmin(self):
-        self.is_admin = False
+        self._is_admin = False
 
     def add_place(self, place):
         if self.is_admin == True and place not in self.places:

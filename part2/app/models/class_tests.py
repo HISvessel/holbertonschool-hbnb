@@ -15,7 +15,7 @@ def test_user_creation():
     print("User creation test passed")
 
 def test_place_creation():
-    owner = User(first_name="Kevin", last_name="Sanchez", email="kevin.s@example.com", is_admin=0)
+    owner = User(first_name="Kevin", last_name="Sanchez", email="kevin.s@example.com", is_admin=1)
     place = Place(title="New place", description="A roomy brand new place", owner_id=owner, latitude=32.02, longitude=98.0, price=125.0)
     review = Review(title='Lovely stay', comment='This was a good stay', rating=4, place_id=place, user_id=owner)
     
@@ -25,6 +25,8 @@ def test_place_creation():
     print("Review submission success!")
 
     assert place.title == "New place"
+    assert owner.is_admin == True
+    print("Kevin is an admin and can own a place")
     assert place.description == "A roomy brand new place"
     assert place.price == 125.0
     assert len(place.reviews) == 1
