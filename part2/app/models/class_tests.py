@@ -4,6 +4,7 @@ Our first test is to create a User before implementing on our API"""
 from user import User
 from places import Place
 from review import Review
+from amenity import Amenity
 
 def test_user_creation():
     user = User(first_name="Joseph", last_name="Gleason", email="joe.g@example.com")
@@ -29,10 +30,14 @@ def test_place_creation():
     assert len(place.reviews) == 1
     assert place.reviews[0].rating == 4
     assert place.reviews[0].comment == "This was a good stay"
-    print("Place creation and place-review relationship success")
+    amenity = test_amenity_creation
+    place.add_amenity(amenity)
+    print("Place creation and place-review/place-relationship relationship success")
 
 def test_amenity_creation():
-    pass
+    amenity = Amenity(amenity_name="Wifi")
+    assert amenity.amenity_name == "Wifi"
+    print("Amenity successfully added!")
 
 test_user_creation()
 test_place_creation()

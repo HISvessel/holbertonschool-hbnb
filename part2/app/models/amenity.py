@@ -4,10 +4,13 @@ from base_model import BaseClass
 
 
 class Amenity(BaseClass):
-    def __init__(self, amenity_id='', place_id=''):
+    def __init__(self, amenity_name=''):
         super().__init__
-        self.amenity_id = amenity_id
-        self.place_id = place_id
+        self.amenity_name = amenity_name
 
-    def add_to_place(self, place):
-        pass
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            "same": self.amenity_name
+        })
+        return data
