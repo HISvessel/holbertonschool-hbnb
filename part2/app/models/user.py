@@ -13,7 +13,7 @@ class User(BaseClass):
         self.last_name = last_name
         self.email = email
         self.is_admin = False  # Regular user by default
-        
+        self.places = []
         # Hash the password for security
         if password:
             self.password_hash = self._hash_password(password)
@@ -64,6 +64,12 @@ class User(BaseClass):
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(pattern, email) is not None
     
+    def add_place(self):
+        self.is_admin = True
+        for place in self.places:
+            if self.is_admin == True:
+                self.places.append(place)
+
     def to_dict(self):
         """Convert to dictionary, excluding password."""
         data = super().to_dict()

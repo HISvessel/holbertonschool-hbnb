@@ -3,12 +3,20 @@ pending edition, since this is for the structure of our files"""
 from base_model import BaseClass
 
 class Review(BaseClass):
-    def __init__(self, user_id='', text='', rating=0, place_id=''):
+    def __init__(self, user_id='', title='',  comment='', rating=0, place_id=''):
         super().__init__()
         self.user_id = user_id
-        self.text = text
+        self.title = title
+        self.comment = comment
         self.rating = rating
         self.place_id = place_id
 
-    def add_review_to_place(self, review):
-        pass
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            "comment": self.comment,
+            "rating": self.rating,
+            "user": self.user_id,
+            "place": self.place_id,
+        })
+        return data
