@@ -6,14 +6,17 @@ import re
 
 class User(BaseClass):
     """Represents a user in our system."""
-    def __init__(self, first_name="", last_name="", email="", password=""):
+    def __init__(self, first_name="", last_name="", email="", password="", is_admin=0):
         """Initialize a new user."""
         super().__init__()  # Call parent class constructor
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.is_admin = False  # Regular user by default
         self.places = []
+        self._is_admin = False  # Regular user by default
+        if is_admin == 1:
+            self.promote_to_admin()
+
         # Hash the password for security
         if password:
             self.password_hash = self._hash_password(password)
@@ -64,21 +67,23 @@ class User(BaseClass):
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(pattern, email) is not None
     
-    #@property
-    #def is_admin(self):
-    #    return self.is_admin
+    def set_admin_status(self, status):
+        #set admin status using True/False
+        if not isinstance(int, status):
+            raise TypeError("Status must be an int(0 or 1)")
+        if status not in (0, 1):
+            raise ValueError("Admin status must be 0 or 1")
+        self._is_admin = bool(status)
+
+    @property
+    def is_admin(self):
+        return self._is_admin
     
-    #@is_admin.setter
-    #def is_admin(self, status):
-    #    try:
-    #        if status == 0:
-    #            self.is_admin == False
-    #        elif status == 1:
-    #            self.is_admin = True
-    #        else:
-    #            raise ValueError("status must be 0 or 1")    
-    #    except TypeError:
-    #        raise TypeError("status must be an int")
+    def promote_to_admin(self):
+        self.is_admin = True
+    
+    def demote_from_amdmin(self):
+        self.is_admin = False
 
     def add_place(self, place):
         if self.is_admin == True and place not in self.places:
