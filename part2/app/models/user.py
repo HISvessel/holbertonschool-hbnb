@@ -64,11 +64,25 @@ class User(BaseClass):
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(pattern, email) is not None
     
-    def add_place(self):
-        self.is_admin = True
-        for place in self.places:
-            if self.is_admin == True:
-                self.places.append(place)
+    #@property
+    #def is_admin(self):
+    #    return self.is_admin
+    
+    #@is_admin.setter
+    #def is_admin(self, status):
+    #    try:
+    #        if status == 0:
+    #            self.is_admin == False
+    #        elif status == 1:
+    #            self.is_admin = True
+    #        else:
+    #            raise ValueError("status must be 0 or 1")    
+    #    except TypeError:
+    #        raise TypeError("status must be an int")
+
+    def add_place(self, place):
+        if self.is_admin == True and place not in self.places:
+            self.places.append(place)
 
     def to_dict(self):
         """Convert to dictionary, excluding password."""
