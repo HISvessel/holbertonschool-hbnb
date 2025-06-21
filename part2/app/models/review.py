@@ -8,12 +8,27 @@ class Review(BaseClass):
         self.user_id = user_id
         self.title = title
         self.comment = comment
-        self.rating = rating
+        self._rating = rating
         self.place_id = place_id
 
+    def validate(self):
+        errors = []
+        if not self.user_id:
+            errors.append("Review must be associated with a user.")
+        if not self.place_id:
+            errors.append("Review must be associated with a place.")
+        if not self.title:
+            errors.append("Title is required.")
+        if not self.comment:
+            errors.append("Comment is required.")
+        if not isinstance(self.rating, int) or not (1 <= self.rating <= 5):
+            errors.append("Rating must be an integer between 1 and 5.")
+        return errors
+    
     def to_dict(self):
         data = super().to_dict()
         data.update({
+            "title": self.title,
             "comment": self.comment,
             "rating": self.rating,
             "user": self.user_id,
