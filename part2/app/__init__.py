@@ -1,0 +1,1 @@
+"""init mrthod to call and run the whole app"""
