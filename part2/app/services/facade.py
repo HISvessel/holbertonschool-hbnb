@@ -13,5 +13,5 @@ class HbnbFacade():
     def create_user(self, user_data):
         pass
 
-    def get_place(seld, place_id):
+    def get_place(self, place_id):
         pass

@@ -9,7 +9,7 @@ class Repository(ABC):
         pass
 
     @abstractmethod
-    def get(slef, obj_id):
+    def get(self, obj_id):
         pass
     
     @abstractmethod

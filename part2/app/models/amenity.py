@@ -8,6 +8,12 @@ class Amenity(BaseClass):
         super().__init__
         self.amenity_name = amenity_name
 
+    def verification(self):
+        errors = []
+        if not self.amenity_name:
+            errors.append("Name for amenity is required")
+        return errors
+
     def to_dict(self):
         data = super().to_dict()
         data.update({
