@@ -1,6 +1,6 @@
 """the integration of our facade, for interaction and connection between entities"""
 from app.persistence.repository import InMemoryRepository
-
+from app.models.user import User
 
 class HbnbFacade():
     def __init__(self):
@@ -11,7 +11,18 @@ class HbnbFacade():
     
     #Placeholder method for creating a user
     def create_user(self, user_data):
-        pass
+        user = User(**user_data)
+        self.user_repo.add(user)
+        return user
+   
+    #getting method for obtaining user by id
+    def get_user(self, user_id):
+        return self.user_repo.get(user_id)
+    
+    #getting method for user by email
+    def get_user_by_email(self, user_email):
+        return self.user_repo.get_by_attribute(user_email)
+
 
     def get_place(self, place_id):
         pass

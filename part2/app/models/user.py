@@ -82,7 +82,7 @@ class User(BaseClass):
     def promote_to_admin(self):
         self._is_admin = True
     
-    def demote_from_amdmin(self):
+    def demote_from_admin(self):
         self._is_admin = False
 
     def add_place(self, place):
