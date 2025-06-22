@@ -12,6 +12,9 @@ class HbnbFacade():
     #Placeholder method for creating a user
     def create_user(self, user_data):
         user = User(**user_data)
+        errors = user.validate()
+        if errors:
+            return {"errors": errors}, 400
         self.user_repo.add(user)
         return user
    
