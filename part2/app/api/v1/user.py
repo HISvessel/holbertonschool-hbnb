@@ -12,6 +12,11 @@ user_model = user_api.model('User', {
     "is_admin": fields.Boolean(required=False, default=False)
 })
 
+user_login_model = user_api.model('UserLogin', {
+    "email": fields.String(required=True),
+    "password": fields.String(required=True)
+})
+
 @user_api.route("/")
 class UserList(Resource):
     @user_api.expect(user_model, validate=True)
@@ -24,6 +29,21 @@ class UserList(Resource):
 
         try:
             new_user = facade.create_user(user_data)
-            return new_user.to_dict, 201
+            return new_user.to_dict(), 201
         except ValueError as e:
             return {"error": str(e)}, 400
+
+@user_api.route("/login")
+class UserLogin(Resource):
+    @user_api.expect(user_login_model, validate=True)
+    @user_api.response(200, "Login successful")
+    @user_api.response(401, "Invalid user or email")
+    def post(self):
+        data = user_api.payload
+        email = data.get("email")
+        password = data.get("password")
+        user = facade.get_user_by_email(email)
+
+        if not user or user.verify_password(password):
+            return {"error": "Invalid email or password"}, 401
+        return user.to_dict(), 200
