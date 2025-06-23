@@ -25,6 +25,12 @@ class HbnbFacade():
     #getting method for user by email
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute("email", email)
+    
+    def get_all_users(self):
+        return self.user_repo.get_all()
+    
+    #def delete_user(self, user_id):
+        #del self.user_repo(user_id)
 
 
     def get_place(self, place_id):

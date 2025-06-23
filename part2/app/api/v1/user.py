@@ -49,3 +49,21 @@ class UserLogin(Resource):
         if not user.verify_password(data["password"]):
             return {"error": "Invalid password"}, 401
         return user.to_dict(), 200
+
+@user_api.route("/<string:user_id>")
+class UserGet(Resource):
+    @user_api.response(200, "User retrieved")
+    @user_api.response(404, "User does not exist")
+    def get(self, user_id):
+        user = facade.get_user(user_id)
+        if not user:
+            return {"error": "User not found"}, 404
+        return user.to_dict(), 200
+
+@user_api.route("/")
+class UserList(Resource):
+    @user_api.response(200, "Users retrieved")
+    def get(self):
+        user_list = facade.get_all_users()
+        users_data = [user.to_dict() for user in user_list]
+        return users_data, 200
