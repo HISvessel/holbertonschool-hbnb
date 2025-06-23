@@ -18,7 +18,7 @@ class BaseClass:
         """method that records the time at which it was saved"""
         self.updated_at = datetime.now()
     
-    def updated(self, data):
+    def update(self, data):
         for key, value in data.items():
             if hasattr(self, key):
                 setattr(self, key, value)

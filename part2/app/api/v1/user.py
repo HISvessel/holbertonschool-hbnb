@@ -17,6 +17,14 @@ user_login_model = user_api.model('UserLogin', {
     "password": fields.String(required=True)
 })
 
+user_update_model = user_api.model("UserUpdate", {
+    "first_name": fields.String(),
+    "last_name": fields.String(),
+    "email": fields.String(),
+    "password": fields.String(),
+    "is_admin": fields.Boolean()
+})
+
 @user_api.route("/")
 class UserList(Resource):
     @user_api.expect(user_model, validate=True)
@@ -67,3 +75,26 @@ class UserList(Resource):
         user_list = facade.get_all_users()
         users_data = [user.to_dict() for user in user_list]
         return users_data, 200
+
+@user_api.route("/<string:user_id>")
+class UserUpdate(Resource):
+    @user_api.expect(user_update_model, validate=True)
+    @user_api.response(201, "User updated")
+    @user_api.response(404, "User not found")
+    @user_api.response(400, "Incorrect data")
+    def put(self, user_id):
+        user = facade.get_user(user_id)
+        if not user:
+            return {"error": "User not found."}, 404
+        data = user_api.payload
+        update_data = {}
+        fields = ["first_name", "last_name", "email", "password", "is_admin"]
+        for key in data:
+            if key not in fields:
+                continue
+            if key == "password":
+                update_data["password"] = user._hash_password(data["password"])
+            else:
+                update_data[key] = data[key]
+        updated_user = facade.update_user(user_id, update_data)
+        return updated_user.to_dict(), 200

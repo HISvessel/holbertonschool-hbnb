@@ -29,6 +29,13 @@ class HbnbFacade():
     def get_all_users(self):
         return self.user_repo.get_all()
     
+    def update_user(self, user_id, updated_data):
+        user = self.user_repo.get(user_id)
+        if not user:
+            return None
+        user.update(updated_data)
+        return user
+    
     #def delete_user(self, user_id):
         #del self.user_repo(user_id)
 
