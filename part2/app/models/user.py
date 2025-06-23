@@ -18,11 +18,9 @@ class User(BaseClass):
             self.promote_to_admin()
 
         # Hash the password for security
-        if password:
-            self.password_hash = self._hash_password(password)
-        else:
-            self.password_hash = None
     
+        self.password_hash = self._hash_password(password) if password else None
+
     def _hash_password(self, password):
         """Hash a password for storing."""
         # Convert password to bytes and hash it
@@ -30,14 +28,13 @@ class User(BaseClass):
         return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
     
     def verify_password(self, password):
-        """Check if provided password is correct."""
         if not self.password_hash:
             return False
         return bcrypt.checkpw(
             password.encode('utf-8'), 
-            self.password_hash.encode('utf-8')
+            self.password_hash.encode('utf-8') # remove the variable, simply result later
         )
-    
+
     def validate(self):
         """Check if user data is valid."""
         errors = []

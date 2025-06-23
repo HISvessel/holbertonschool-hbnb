@@ -41,9 +41,11 @@ class UserLogin(Resource):
     def post(self):
         data = user_api.payload
         email = data.get("email")
-        password = data.get("password")
+        #password = data.get("password") #Temporary block, attaining password through different method
         user = facade.get_user_by_email(email)
 
-        if not user or user.verify_password(password):
-            return {"error": "Invalid email or password"}, 401
+        if not user:
+            return{"error": "User not found"}, 404
+        if not user.verify_password(data["password"]):
+            return {"error": "Invalid password"}, 401
         return user.to_dict(), 200

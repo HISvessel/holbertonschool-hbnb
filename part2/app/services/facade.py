@@ -23,8 +23,8 @@ class HbnbFacade():
         return self.user_repo.get(user_id)
     
     #getting method for user by email
-    def get_user_by_email(self, user_email):
-        return self.user_repo.get_by_attribute("email", user_email)
+    def get_user_by_email(self, email):
+        return self.user_repo.get_by_attribute("email", email)
 
 
     def get_place(self, place_id):
