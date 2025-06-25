@@ -15,4 +15,6 @@ def create_app():
     my_api.add_namespace(user_api, path="/v1/user")
     my_api.add_namespace(amenity_api, path="/v1/amenities")
     my_api.add_namespace(place_api, path="/v1/place")
+    for rule in app.url_map.iter_rules():
+        print(f"{rule.endpoint:30s} -> {rule.rule}")
     return app

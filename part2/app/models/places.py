@@ -1,10 +1,10 @@
 """this is the file for the creation of our place entity; changes pending
 as this is for file structure"""
-from base_model import BaseClass
+from app.models.base_model import BaseClass
 
 class Place(BaseClass):
     def __init__(self, title='', description='', owner_id='',
-                 latitude=0.0, longitude=0.0, price=0.0):
+                 latitude=0.0, longitude=0.0, price=0.0, amenities=None, reviews=None):
         super().__init__()
         self.title = title
         self.description = description
@@ -12,8 +12,8 @@ class Place(BaseClass):
         self._latitude = 0
         self._longitude = 0
         self.owner_id = owner_id
-        self.amenities = []
-        self.reviews = []
+        self.amenities = amenities if amenities is not None else []
+        self.reviews = reviews if reviews is not None else []
 
         self.price = price
         self.latitude = latitude
@@ -101,7 +101,9 @@ class Place(BaseClass):
             "title": self.title,
             "description": self.description,
             "price": self._price,
-            "coordinates": {self._latitude, self._longitude},
+            #"coordinates": {self._latitude, self._longitude},
+            "latitude": self.latitude,
+            "longitude": self.longitude,
             "owner": self.owner_id,
             "amenities": self.amenities,
             "reviews": self.reviews
