@@ -62,7 +62,11 @@ class HbnbFacade():
         return self.amenity_repo.get(amenity_id)
 
     def get_all_amenities(self):
-        pass
+        return self.amenity_repo.get_all()
 
-    def update_amenities(self, amenity_id, amenity_data):
-        pass
+    def update_amenity(self, amenity_id, updated_data):
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            return None
+        amenity.update(updated_data)
+        return amenity
