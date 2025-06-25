@@ -101,7 +101,7 @@ class Place(BaseClass):
             "title": self.title,
             "description": self.description,
             "price": self._price,
-            "coordinates": [self._latitude, self._longitude],
+            "coordinates": {self._latitude, self._longitude},
             "owner": self.owner_id,
             "amenities": self.amenities,
             "reviews": self.reviews

@@ -52,36 +52,36 @@ class HbnbFacade():
         self.place_repo.add(place)
         return place
 
-    def get_place(self, place_id):
-        return self.place_repo.get(place_id)
+    #def get_place(self, place_id):
+        #return self.place_repo.get(place_id)
 
-    def get_all_places(self):
-        return self.place_repo.get_all()
+    #def get_all_places(self):
+    #    return self.place_repo.get_all()
 
-    def get_places_by_review(self, value):
+    #def get_places_by_review(self, value):
         """a facade function that allows us to search by filtering
         all reviews of the same 0 to 5 star rating, which is tied to the
         place's overall review meter and not by the review entity itself"""
-        pass
+    #    pass
 
-    def get_places_by_amenity(self, data_name):
+    #def get_places_by_amenity(self, data_id):
         """This is a potential model that searches
         all existing place by filtering the contents of 
         the list of all existing places and finding the amenity
         name in the amenity dictionary's name key"""
-        pass
+    #    pass
 
-    def update_place(self, place_id, updated_data):
-        place = self.place_repo.get(place_id)
-        if not place:
-            return None
-        place.update(updated_data) # if the below lines are implemented
+    #def update_place(self, place_id, updated_data):
+    #    place = self.place_repo.get(place_id)
+    #    if not place:
+    #        return None
+    #    place.update(updated_data) # if the below lines are implemented
         #this will be stored as an updated place instead
         #possible line to validate updated place
         #place.validate()
         #if errors:
         #   return {"errors": errors}, 404
-        return place
+    #    return place
 
     """Part 3 of our facade: implementing the facade between
     the Amenity API and the Amenity class"""
