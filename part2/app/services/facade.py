@@ -2,6 +2,8 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
+from app.models.places import Place
+#from app.models.reviews import Review
 
 class HbnbFacade():
     def __init__(self):
@@ -38,14 +40,48 @@ class HbnbFacade():
         user.update(updated_data)
         return user
     
-    #def delete_user(self, user_id):
-        #del self.user_repo(user_id)
 
     """Part2 of our facade: implementing the facade between
     the Place APIs and the Place class"""
 
+    def create_place(self, place_data):
+        place = Place(**place_data)
+        errors = place.validate()
+        if errors:
+            return {"errors": errors}, 400
+        self.place_repo.add(place)
+        return place
+
     def get_place(self, place_id):
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        return self.place_repo.get_all()
+
+    def get_places_by_review(self, value):
+        """a facade function that allows us to search by filtering
+        all reviews of the same 0 to 5 star rating, which is tied to the
+        place's overall review meter and not by the review entity itself"""
         pass
+
+    def get_places_by_amenity(self, data_name):
+        """This is a potential model that searches
+        all existing place by filtering the contents of 
+        the list of all existing places and finding the amenity
+        name in the amenity dictionary's name key"""
+        pass
+
+    def update_place(self, place_id, updated_data):
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+        place.update(updated_data) # if the below lines are implemented
+        #this will be stored as an updated place instead
+        #possible line to validate updated place
+        #place.validate()
+        #if errors:
+        #   return {"errors": errors}, 404
+        return place
 
     """Part 3 of our facade: implementing the facade between
     the Amenity API and the Amenity class"""
@@ -70,3 +106,20 @@ class HbnbFacade():
             return None
         amenity.update(updated_data)
         return amenity
+
+    """part 4: models for CRUDding reviews"""
+
+    #def create_review(self):
+    #    pass
+
+    #def get_review(self, review_id):
+    #    pass
+
+    #def get_all_reviews(self):
+    #    pass
+
+    #def update_review(self, review_id, updated_data):
+        #pass
+
+    #def delete_review(self, review_id):
+    #    pass

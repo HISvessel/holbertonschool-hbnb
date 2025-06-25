@@ -61,12 +61,31 @@ class Place(BaseClass):
             raise ValueError("Place a correct longitude: values between -180.0 and 180.0")
         self._longitude = point_x
 
-    def verification(self):
-        pass
+    def validate(self):
+        errors = []
+        
+        if not self.title:
+            errors.append("Title is required")
+        
+        if not self.description:
+            errors.append("Description is required")
+        
+        if self.price <= 0:
+            errors.append("Price must be greater than 0")
+        
+        if not self.owner_id:
+            errors.append("Owner ID is required")
+        
+        return errors
+
     
     def add_review(self, review):
         if review not in self.reviews:
             self.reviews.append(review)
+    
+    def remove_review(self, review):
+        if review in self.reviews:
+            self.reviews.remove(review)
     
     def add_amenity(self, amenity):
         if amenity not in self.amenities:
