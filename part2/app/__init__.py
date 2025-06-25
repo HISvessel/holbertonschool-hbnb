@@ -3,7 +3,7 @@ from flask import Flask
 from flask_restx import Api
 from app.api.v1.user import user_api
 from app.api.v1.amenity import amenity_api
-from app.api.v1.places import places_api
+#from app.api.v1.places import places_api
 
 def create_app():
     app = Flask(__name__)
