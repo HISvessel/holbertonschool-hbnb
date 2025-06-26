@@ -129,4 +129,4 @@ class HbnbFacade():
     def delete_review(self, review_id):
         review = self.review_repo.get(review_id)
         if review:
-            review.remove() # to be updated
+            review.delete # to be updated

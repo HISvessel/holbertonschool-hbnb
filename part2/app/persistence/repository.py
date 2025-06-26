@@ -21,8 +21,8 @@ class Repository(ABC):
         pass
 
     @abstractmethod
-    #def delete(self, obj_id):
-        #pass
+    def delete(self, obj_id):
+        pass
 
     @abstractmethod
     def get_by_attribute(self, attr_name, attr_value):
