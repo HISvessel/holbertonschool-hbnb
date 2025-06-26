@@ -108,3 +108,4 @@ class Place(BaseClass):
             "amenities": self.amenities,
             "reviews": self.reviews
         })
+        return data

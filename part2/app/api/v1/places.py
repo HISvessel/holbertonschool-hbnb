@@ -63,13 +63,15 @@ class CreatePlace(Resource):
           return place, 201
       except Exception as e:
           return place_api.abort(404, str(e))
-    
+
+@place_api.route("/all")
+class PlaceList(Resource):
     @place_api.response(201, "Places retrieved.")
     @place_api.response(400, "Places could not be found.")
     def get(self):
         place_list = facade.get_all_places()
         place_data = [place.to_dict() for place in place_list]
-        return place_data, 201
+        return place_data, 200
     
 @place_api.route("/<string:place_id>")
 class GetPlace(Resource):
@@ -80,4 +82,25 @@ class GetPlace(Resource):
         place = facade.get_place(place_id)
         if not place:
             place_api.abort(404, "Place not found.")
-        return place, 201
+        return place, 200
+    
+@place_api.route("/<string:place_id>")
+class UpdatePlace(Resource):
+    @place_api.expect(place_update_model, validate=True)
+    @place_api.response(200, "Place updated")
+    @place_api.response(404, "Invalid place")
+    @place_api.response(400, "Invalid data")
+    @marshal_with(place_output_model)
+    def put(self, place_id):
+        data = place_api.payload
+        place = facade.get_place(place_id)
+        if not place:
+            place_api.abort(404, "Place not found")
+        allowed_fields = ["title", "description", "price", "owner_id", "amenities"]
+        updated_data = {}
+        for key in data:
+            if key not in allowed_fields:
+                continue
+            updated_data[key] = data[key]
+        updated_place = facade.update_place(place_id, updated_data)
+        return updated_place, 200

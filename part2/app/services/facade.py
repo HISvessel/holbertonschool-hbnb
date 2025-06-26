@@ -56,7 +56,8 @@ class HbnbFacade():
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
-        return self.place_repo.get_all()
+        places = self.place_repo.get_all()
+        return places
 
     #def get_places_by_review(self, value):
         """a facade function that allows us to search by filtering
@@ -71,17 +72,12 @@ class HbnbFacade():
         name in the amenity dictionary's name key"""
     #    pass
 
-    #def update_place(self, place_id, updated_data):
-    #    place = self.place_repo.get(place_id)
-    #    if not place:
-    #        return None
-    #    place.update(updated_data) # if the below lines are implemented
-        #this will be stored as an updated place instead
-        #possible line to validate updated place
-        #place.validate()
-        #if errors:
-        #   return {"errors": errors}, 404
-    #    return place
+    def update_place(self, place_id, updated_data):
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+        place.update(updated_data)
+        return place
 
     """Part 3 of our facade: implementing the facade between
     the Amenity API and the Amenity class"""
