@@ -51,7 +51,7 @@ class GetAmenity(Resource):
         amenity = facade.get_amenity(amenity_id)
         if not amenity:
            amenity_api.abort(404, "Amenity not found")
-        return amenity
+        return amenity, 201
 
 
 @amenity_api.route("/<string:amenity_id>")

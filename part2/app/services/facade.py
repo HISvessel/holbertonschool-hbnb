@@ -52,11 +52,11 @@ class HbnbFacade():
         self.place_repo.add(place)
         return place
 
-    #def get_place(self, place_id):
-        #return self.place_repo.get(place_id)
+    def get_place(self, place_id):
+        return self.place_repo.get(place_id)
 
-    #def get_all_places(self):
-    #    return self.place_repo.get_all()
+    def get_all_places(self):
+        return self.place_repo.get_all()
 
     #def get_places_by_review(self, value):
         """a facade function that allows us to search by filtering

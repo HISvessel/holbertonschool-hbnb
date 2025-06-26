@@ -50,11 +50,11 @@ place_update_model = place_api.model("PlaceUpdateModel", {
 
 @place_api.route("/")
 class CreatePlace(Resource):
-    place_api.expect(place_model, validate=True)
-    place_api.response(200, "Successful creation of place")
-    place_api.response(400, "Cannot add place, already exists") # pending deletion
-    place_api.response(400, "Invalid price set") # pending deletion
-    place_api.response(400, "Invalid user ID")
+    @place_api.expect(place_model, validate=True)
+    @place_api.response(200, "Successful creation of place")
+    @place_api.response(400, "Cannot add place, already exists") # pending deletion
+    @place_api.response(400, "Invalid price set") # pending deletion
+    @place_api.response(400, "Invalid user ID")
     @marshal_with(place_output_model)
     def post(self):
       place_data = place_api.payload
@@ -62,4 +62,22 @@ class CreatePlace(Resource):
           place = facade.create_place(place_data)
           return place, 201
       except Exception as e:
-         return place_api.abort(404, str(e))
+          return place_api.abort(404, str(e))
+    
+    @place_api.response(201, "Places retrieved.")
+    @place_api.response(400, "Places could not be found.")
+    def get(self):
+        place_list = facade.get_all_places()
+        place_data = [place.to_dict() for place in place_list]
+        return place_data, 201
+    
+@place_api.route("/<string:place_id>")
+class GetPlace(Resource):
+    @place_api.response(201, "Place retrieved.")
+    @place_api.response(404, "Place not found.")
+    @marshal_with(place_output_model)
+    def get(self, place_id):
+        place = facade.get_place(place_id)
+        if not place:
+            place_api.abort(404, "Place not found.")
+        return place, 201
