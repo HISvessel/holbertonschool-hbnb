@@ -3,7 +3,7 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.places import Place
-#from app.models.reviews import Review
+from app.models.review import Review
 
 class HbnbFacade():
     def __init__(self):
@@ -105,17 +105,28 @@ class HbnbFacade():
 
     """part 4: models for CRUDding reviews"""
 
-    #def create_review(self):
-    #    pass
+    def create_review(self, review_data):
+        review = Review(**review_data)
+        errors = review.validate()
+        if errors:
+            return {"errors": errors}, 404
+        self.review_repo.add(review)
+        return review
 
-    #def get_review(self, review_id):
-    #    pass
+    def get_review(self, review_id):
+        return self.review_repo.get(review_id)
 
-    #def get_all_reviews(self):
-    #    pass
-
-    #def update_review(self, review_id, updated_data):
-        #pass
-
-    #def delete_review(self, review_id):
-    #    pass
+    def get_all_reviews(self):
+        return self.review_repo.get_all()
+    
+    def update_review(self, review_id, updated_data):
+        review = self.review_repo.get(review_id)
+        if not review:
+            return None
+        review.update(updated_data)
+        return review
+    
+    def delete_review(self, review_id):
+        review = self.review_repo.get(review_id)
+        if review:
+            review.remove() # to be updated

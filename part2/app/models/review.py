@@ -25,6 +25,18 @@ class Review(BaseClass):
             errors.append("Rating must be an integer between 1 and 5.")
         return errors
     
+    @property
+    def rating(self):
+        return self._rating
+    @rating.setter
+    def rating(self, input):
+        if input < 1:
+            raise ValueError("Input must be higher than 0")
+        if TypeError:
+            raise TypeError("INput must be an int")
+        self.rating = input
+
+        return self._rating
     def to_dict(self):
         data = super().to_dict()
         data.update({
