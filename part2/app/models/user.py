@@ -66,7 +66,7 @@ class User(BaseClass):
     
     def set_admin_status(self, status):
         #set admin status using True/False
-        if not isinstance(int, status):
+        if not isinstance(status, int):
             raise TypeError("Status must be an int(0 or 1)")
         if status not in (0, 1):
             raise ValueError("Admin status must be 0 or 1")
