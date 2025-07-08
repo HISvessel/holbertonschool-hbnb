@@ -15,6 +15,9 @@ class HbnbFacade():
     """Part 1 of our facade: implementing the facade between
     the User API and the User class"""
     def create_user(self, user_data):
+        existing_user = self.get_user_by_email(user_data.get("email"))
+        if existing_user:
+            raise ValueError("That email is already logged.")
         user = User(**user_data)
         errors = user.validate()
         if errors:
@@ -128,5 +131,7 @@ class HbnbFacade():
     
     def delete_review(self, review_id):
         review = self.review_repo.get(review_id)
-        if review:
-            review.delete(review_id)
+        if not review:
+            raise ValueError("Review does not exist")
+        self.review_repo.delete(review_id)
+        return True

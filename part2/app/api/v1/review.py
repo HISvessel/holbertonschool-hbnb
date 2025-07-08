@@ -15,6 +15,7 @@ review_model = review_api.model("ReviewModel", {
 })
 
 review_output_model = review_api.model("ReviewOutputModel", {
+    "id": fields.String,
     "title": fields.String,
     "comment": fields.String,
     "rating": fields.Integer,
@@ -25,7 +26,8 @@ review_output_model = review_api.model("ReviewOutputModel", {
 review_update_model = review_api.model("ReviewUpdate", {
     "title": fields.String(required=True, description="Updated amenity data"),
     "comment": fields.String(required=True, description="new comment for the place"),
-    "rating": fields.Integer
+    "rating": fields.Integer,
+    "updated_at": fields.DateTime
 })
 
 @review_api.route("/")
@@ -45,7 +47,7 @@ class ReviewCreation(Resource):
     @review_api.response(200, "Reviews obtained")
     @review_api.response(400, "Cannot locate reviews")
     def get(self):
-        review_list = facade.get_all_amenities()
+        review_list = facade.get_all_reviews()
         review_data = [review.to_dict() for review in review_list]
         return review_data, 200
 
@@ -58,11 +60,9 @@ class GetReview(Resource):
         review = facade.get_review(review_id)
         if not review:
            review_api.abort(404, "Review not found")
-        return review, 201
+        return review, 200
 
 
-@review_api.route("/<string:review_id>")
-class UpdateReview(Resource):
     @review_api.expect(review_update_model, validate=True)
     @review_api.response(200, "Amenity successfully updated")
     @review_api.response(404, "Amenity cannot be found")
@@ -84,5 +84,7 @@ class UpdateReview(Resource):
 
     @review_api.response(200, "Review successfully deleted")
     def delete(self, review_id):
+        if not facade.get_review():
+            return {"error": "Review does not exist"}, 404
         facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}, 200

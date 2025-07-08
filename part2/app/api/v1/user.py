@@ -1,4 +1,4 @@
-from flask_restx import Resource, Namespace, fields, marshal_with
+from flask_restx import Resource, Namespace, fields, marshal_with, marshal
 from app.services import facade
 
 
@@ -18,6 +18,7 @@ user_login_model = user_api.model('UserLogin', {
 })
 
 user_output_model = user_api.model("UserOutputModel", {
+    "id": fields.String,
     "first_name": fields.String,
     "last_name": fields.String,
     "email": fields.String,
@@ -62,17 +63,16 @@ class UserLogin(Resource):
     @user_api.expect(user_login_model, validate=True)
     @user_api.response(200, "Login successful")
     @user_api.response(401, "Invalid user or email")
-    @marshal_with(user_output_model)
     def post(self):
         data = user_api.payload
         email = data.get("email")
         user = facade.get_user_by_email(email)
 
         if not user:
-            return{"error": "User not found"}, 404
+            return {"error": "User not found"}, 404
         if not user.verify_password(data["password"]):
             return {"error": "Invalid password"}, 401
-        return user, 200 # temporarily removed to_dict
+        return marshal(user, user_output_model), 200
 
 @user_api.route("/<string:user_id>")
 class UserGet(Resource):
@@ -82,8 +82,8 @@ class UserGet(Resource):
     def get(self, user_id):
         user = facade.get_user(user_id)
         if not user:
-            return {"error": "User not found"}, 404
-        return user.to_dict(), 200 # pending to remove to_dict
+            user_api.abort(404, "User not found")
+        return user, 200 # pending to remove to_dict
 
     @user_api.expect(user_update_model, validate=True)
     @user_api.response(201, "User updated")

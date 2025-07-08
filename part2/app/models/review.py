@@ -33,7 +33,7 @@ class Review(BaseClass):
         if input < 1:
             raise ValueError("Input must be higher than 0")
         if TypeError:
-            raise TypeError("INput must be an int")
+            raise TypeError("Input must be an int")
         self.rating = input
 
         return self._rating
