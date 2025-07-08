@@ -27,7 +27,6 @@ review_update_model = review_api.model("ReviewUpdate", {
     "title": fields.String(required=True, description="Updated amenity data"),
     "comment": fields.String(required=True, description="new comment for the place"),
     "rating": fields.Integer,
-    "updated_at": fields.DateTime
 })
 
 @review_api.route("/")
@@ -84,7 +83,7 @@ class GetReview(Resource):
 
     @review_api.response(200, "Review successfully deleted")
     def delete(self, review_id):
-        if not facade.get_review():
+        if not facade.get_review(review_id):
             return {"error": "Review does not exist"}, 404
         facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}, 200
