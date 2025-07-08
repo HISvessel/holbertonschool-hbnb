@@ -17,6 +17,14 @@ user_login_model = user_api.model('UserLogin', {
     "password": fields.String(required=True)
 })
 
+user_output_model = user_api.model("UserOutputModel", {
+    "first_name": fields.String,
+    "last_name": fields.String,
+    "email": fields.String,
+    "is_admin": fields.Boolean,
+    "created_at":fields.DateTime,
+    "updated_at": fields.DateTime
+})
 user_update_model = user_api.model("UserUpdate", {
     "first_name": fields.String(),
     "last_name": fields.String(),

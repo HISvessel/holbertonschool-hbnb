@@ -6,6 +6,7 @@ from app.services import facade
 review_api = Namespace("review", description="Review endpoints")
 
 review_model = review_api.model("ReviewModel", {
+    "id": fields.String(description='Review ID'),
     "title": fields.String(required=True, description="Title for a review"),
     "comment": fields.String(required=True, description="Comments in a review"),
     "rating": fields.Integer,

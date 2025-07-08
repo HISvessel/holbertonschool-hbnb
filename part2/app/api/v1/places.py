@@ -17,6 +17,7 @@ place_model = place_api.model("PlaceModel", {
     "latitude": fields.Float,
     "longitude": fields.Float,
     "owner_id": fields.String(required=True, description="owner of the place"),
+    "owner": fields.String(required=True, description='owner of the place'),
     "amenities": fields.List(fields.String, description="List of amenity IDs"),
     "reviews": fields.List(fields.String, description="List of review IDs")
 })
@@ -25,8 +26,8 @@ place_output_model = place_api.model("PlaceOutput", {
     "id": fields.String,
     "title": fields.String,
     "description": fields.String,
-    "created_at": fields.String,
-    "updated_at": fields.String,
+    "created_at": fields.DateTime,
+    "updated_at": fields.DateTime,
     "price": fields.Float,
   #potentially to set as coordinates for more accurate representation
     #"coordinates": fields.Nested(place_api.model("Coordinates", {
@@ -70,8 +71,8 @@ class PlaceList(Resource):
     @place_api.response(400, "Places could not be found.")
     def get(self):
         place_list = facade.get_all_places()
-        place_data = [place.to_dict() for place in place_list]
-        return place_data, 200
+       # place_data = [place.to_dict() for place in place_list]
+        return place_list, 200
     
 @place_api.route("/<string:place_id>")
 class GetPlace(Resource):
