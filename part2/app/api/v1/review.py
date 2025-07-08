@@ -81,7 +81,8 @@ class UpdateReview(Resource):
             updated_data[key] = data[key]
         updated_review = facade.update_review(review_id, updated_data)
         return updated_review, 200
-    
-    @review_api.route("/string:review_id>")
-    class DeleteReview(Resource):
-        pass
+
+    @review_api.response(200, "Review successfully deleted")
+    def delete(self, review_id):
+        facade.delete_review(review_id)
+        return {"message": "Review deleted successfully"}, 200
