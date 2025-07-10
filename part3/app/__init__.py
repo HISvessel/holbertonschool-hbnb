@@ -6,8 +6,8 @@ from app.api.v1.amenity import amenity_api
 from app.api.v1.places import place_api
 from app.api.v1.review import review_api
 from app import config
-from flask-bcrypt import Bcrypt
-from flask-jwt-extended import JWTManager
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 
 bcrypt = Bcrypt()

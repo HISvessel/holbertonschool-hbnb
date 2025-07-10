@@ -28,11 +28,13 @@ class Review(BaseClass):
     @property
     def rating(self):
         return self._rating
+    
     @rating.setter
     def rating(self, input):
         if input < 1:
             raise ValueError("Input must be higher than 0")
-        if TypeError:
+        #checking or type checking with isinstance, not TypeError
+        if not isinstance(input, int):
             raise TypeError("Input must be an int")
         self.rating = input
 
