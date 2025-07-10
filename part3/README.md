@@ -1,0 +1,1 @@
+This is part 3 of the HBnb project for Holberton Coding School's second trimester. This part of the project begins to add data persistence, authentication, requests and configuration for our first version of the flask generated website. More to come based on project development.
