@@ -5,11 +5,16 @@ from app.api.v1.user import user_api
 from app.api.v1.amenity import amenity_api
 from app.api.v1.places import place_api
 from app.api.v1.review import review_api
+from app import config
+from flask-bcrypt import Bcrypt
 
-def create_app():
+def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
     my_api = Api(app, version='1.0', title='Hbnb API', description='Hbnb Application API', doc='/api/v1')
-
+    app.config.from_object(config_class)
+    bcrypt = Bcrypt()
+    bcrypt.__init__app(app)
+    
     #Placeholder for API namespace(endpoints will be added later)
     #additional namespaces for places, reviews, and ammenities will be added later
     my_api.add_namespace(user_api, path="/v1/user")
