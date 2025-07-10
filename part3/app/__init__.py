@@ -5,7 +5,6 @@ from app.api.v1.user import user_api
 from app.api.v1.amenity import amenity_api
 from app.api.v1.places import place_api
 from app.api.v1.review import review_api
-from app import config
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
@@ -17,8 +16,8 @@ def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
     my_api = Api(app, version='1.0', title='Hbnb API', description='Hbnb Application API', doc='/api/v1')
     app.config.from_object(config_class)
-    bcrypt.__init__app(app)
-    jwt.__init__app(app)
+    bcrypt.init_app(app)
+    jwt.init_app(app)
     
     #Placeholder for API namespace(endpoints will be added later)
     #additional namespaces for places, reviews, and ammenities will be added later

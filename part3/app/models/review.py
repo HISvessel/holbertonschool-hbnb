@@ -2,6 +2,7 @@
 pending edition, since this is for the structure of our files"""
 from app.models.base_model import BaseClass
 
+
 class Review(BaseClass):
     def __init__(self, user_id='', title='',  comment='', rating=0, place_id=''):
         super().__init__()
@@ -24,11 +25,11 @@ class Review(BaseClass):
         if not isinstance(self.rating, int) or not (1 <= self.rating <= 5):
             errors.append("Rating must be an integer between 1 and 5.")
         return errors
-    
+
     @property
     def rating(self):
         return self._rating
-    
+
     @rating.setter
     def rating(self, input):
         if input < 1:
@@ -36,9 +37,9 @@ class Review(BaseClass):
         #checking or type checking with isinstance, not TypeError
         if not isinstance(input, int):
             raise TypeError("Input must be an int")
-        self.rating = input
+        self._rating = input
 
-        return self._rating
+
     def to_dict(self):
         data = super().to_dict()
         data.update({
