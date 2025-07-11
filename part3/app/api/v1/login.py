@@ -14,7 +14,7 @@ login_model = login_api.model("Login", {
 })
 
 """this route is created for authetication of user upon login"""
-@login_api.route("/")
+@login_api.route("/login")
 class Login(Resource):
     login_api.expect(login_model)
     def post(self):
@@ -32,4 +32,4 @@ class Protected(Resource):
     @jwt_required()
     def get(self):
         user = get_jwt_identity()
-        return {"message": f"Hello user {user["id"]}"}, 200
+        return {"message": f'Hello user {user["id"]}'}, 200
