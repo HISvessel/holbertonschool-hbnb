@@ -5,20 +5,20 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 
 """this is our user API route model"""
-login_api = Namespace("login", description="authentication operation")
+auth_api = Namespace("login", description="authentication operation")
 
 """this is our login model"""
-login_model = login_api.model("Login", {
+auth_model = auth_api.model("Login", {
     "email": fields.String(required=True, description="user's email"),
     "password": fields.String(required=True, description="user's password")
 })
 
 """this route is created for authetication of user upon login"""
-@login_api.route("/login")
+@auth_api.route("/login")
 class Login(Resource):
-    login_api.expect(login_model)
+    auth_api.expect(auth_model)
     def post(self):
-        credentials= login_api.payload
+        credentials= auth_api.payload
         user = facade.get_user_by_email(credentials['email'])
         if not user or not user.verify_password(credentials["password"]):
             return {"error": "Invalid email or password."}, 401
@@ -27,7 +27,7 @@ class Login(Resource):
 
 """this endpoint was created for verification of token to grant user
 access to account details and for managing of queries"""
-@login_api.route("/protected")
+@auth_api.route("/protected")
 class Protected(Resource):
     @jwt_required()
     def get(self):

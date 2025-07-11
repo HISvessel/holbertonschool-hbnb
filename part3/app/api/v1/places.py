@@ -1,5 +1,6 @@
 """the first creation of our place class; pending changes, as these are for structure"""
 from flask_restx import Namespace, fields, Resource, marshal_with
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.services import facade
 
 
@@ -57,10 +58,14 @@ class CreatePlace(Resource):
     @place_api.response(400, "Invalid price set") # pending deletion
     @place_api.response(400, "Invalid user ID")
     @marshal_with(place_output_model)
+    @jwt_required()
     def post(self):
+      current_user = get_jwt_identity()
       place_data = place_api.payload
       try:
           place = facade.create_place(place_data)
+          if place.owner_id != current_user:
+              place_api.abort(403, "Unauthorized action")
           return place, 201
       except Exception as e:
           return place_api.abort(404, str(e))
@@ -92,9 +97,15 @@ class UpdatePlace(Resource):
     @place_api.response(404, "Invalid place")
     @place_api.response(400, "Invalid data")
     @marshal_with(place_output_model)
+    @jwt_required()
     def put(self, place_id):
         data = place_api.payload
         place = facade.get_place(place_id)
+        current_user = get_jwt_identity() #retrieving current user upon method
+        
+        #checking that place id maches the current user's id
+        if place.user_id != current_user:
+            place_api.abort(403, "Unauthorized action.")
         if not place:
             place_api.abort(404, "Place not found")
         allowed_fields = ["title", "description", "price", "owner_id", "amenities"]

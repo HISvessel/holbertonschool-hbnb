@@ -5,7 +5,7 @@ from app.api.v1.user import user_api
 from app.api.v1.amenity import amenity_api
 from app.api.v1.places import place_api
 from app.api.v1.review import review_api
-from app.api.v1.login import login_api
+from app.api.v1.login import auth_api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
@@ -26,7 +26,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     my_api.add_namespace(amenity_api, path="/v1/amenities")
     my_api.add_namespace(place_api, path="/v1/place")
     my_api.add_namespace(review_api, path="/v1/review")
-    my_api.add_namespace(login_api, path="/v1/auth")
+    my_api.add_namespace(auth_api, path="/v1/auth")
     for rule in app.url_map.iter_rules():
         print(f"{rule.endpoint:30s} -> {rule.rule}")
     return app
