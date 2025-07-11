@@ -62,10 +62,9 @@ class CreatePlace(Resource):
     def post(self):
       current_user = get_jwt_identity()
       place_data = place_api.payload
+      place_data["user_id"] = current_user["id"]
       try:
           place = facade.create_place(place_data)
-          if place.owner_id != current_user:
-              place_api.abort(403, "Unauthorized action")
           return place, 201
       except Exception as e:
           return place_api.abort(404, str(e))
@@ -89,8 +88,7 @@ class GetPlace(Resource):
         if not place:
             place_api.abort(404, "Place not found.")
         return place, 200
-    
-@place_api.route("/<string:place_id>")
+
 class UpdatePlace(Resource):
     @place_api.expect(place_update_model, validate=True)
     @place_api.response(200, "Place updated")
@@ -104,7 +102,7 @@ class UpdatePlace(Resource):
         current_user = get_jwt_identity() #retrieving current user upon method
         
         #checking that place id maches the current user's id
-        if place.user_id != current_user:
+        if place.owner_id != current_user["id"]:
             place_api.abort(403, "Unauthorized action.")
         if not place:
             place_api.abort(404, "Place not found")
