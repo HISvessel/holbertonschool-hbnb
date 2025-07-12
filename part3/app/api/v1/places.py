@@ -18,7 +18,6 @@ place_model = place_api.model("PlaceModel", {
     "latitude": fields.Float,
     "longitude": fields.Float,
     "owner_id": fields.String(required=True, description="owner of the place"),
-    #"owner": fields.String(required=True, description='owner of the place'),
     "amenities": fields.List(fields.String, description="List of amenity IDs"),
     "reviews": fields.List(fields.String, description="List of review IDs")
 })
@@ -46,7 +45,6 @@ place_update_model = place_api.model("PlaceUpdateModel", {
     "title": fields.String(required=True, description="place name"),
     "description": fields.String(required= True, description="description of place"),
     "price": fields.Float(required=True, description="price for booking place"),
-    "owner_id": fields.String(required=True, description="owner of the place"),
     "amenitites": fields.List(fields.String)
 })
 
@@ -75,8 +73,8 @@ class PlaceList(Resource):
     @place_api.response(400, "Places could not be found.")
     def get(self):
         place_list = facade.get_all_places()
-       # place_data = [place.to_dict() for place in place_list]
-        return place_list, 200
+        place_data = [place.to_dict() for place in place_list]
+        return place_data, 200
     
 @place_api.route("/<string:place_id>")
 class GetPlace(Resource):
@@ -89,7 +87,7 @@ class GetPlace(Resource):
             place_api.abort(404, "Place not found.")
         return place, 200
 
-class UpdatePlace(Resource):
+
     @place_api.expect(place_update_model, validate=True)
     @place_api.response(200, "Place updated")
     @place_api.response(404, "Invalid place")
@@ -102,7 +100,7 @@ class UpdatePlace(Resource):
         current_user = get_jwt_identity() #retrieving current user upon method
         
         #checking that place id maches the current user's id
-        if place.owner_id != current_user["id"]:
+        if place.owner_id != current_user:
             place_api.abort(403, "Unauthorized action.")
         if not place:
             place_api.abort(404, "Place not found")
