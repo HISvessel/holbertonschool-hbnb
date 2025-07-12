@@ -18,7 +18,8 @@ review_output_model = review_api.model("ReviewOutputModel", {
     "title": fields.String,
     "comment": fields.String,
     "rating": fields.Integer,
-    "user_id": fields.String,# pending deletion. must test if
+    "user": fields.String,# pending deletion. must test if
+    "place": fields.String,
     "created_at": fields.String,
     "updated_at": fields.String,
     })
