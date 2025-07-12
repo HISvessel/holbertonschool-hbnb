@@ -22,8 +22,11 @@ class Login(Resource):
         user = facade.get_user_by_email(credentials['email'])
         if not user or not user.verify_password(credentials["password"]):
             return {"error": "Invalid email or password."}, 401
-        access_token = create_access_token(identity=str(user.id)) #passing a string and not a dictionary
-        return {"access_token":access_token}, 200
+        access_token = create_access_token(
+            identity=str(user.id),
+            additional_claims={"is_admin":user.is_admin,
+                               "email": user.email}) #passing a string and not a dictionary
+        return {"access_token": access_token}, 200
 
 """this endpoint was created for verification of token to grant user
 access to account details and for managing of queries"""
