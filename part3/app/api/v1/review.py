@@ -47,6 +47,8 @@ class ReviewCreation(Resource):
 
         all_reviews = facade.get_all_reviews()
         try:
+            if not place:
+                review_api.abort(401, "Cannot add review. Place does not exist.")
             #testing model to block a place owner reviewing their own place
             if place.owner_id == current_user:
                 review_api.abort(403, "You cannot review your own place")
@@ -69,7 +71,7 @@ class ReviewCreation(Resource):
         return review_data, 200
 
 @review_api.route("/<string:review_id>")
-class GetReview(Resource):
+class ReviewDetails(Resource):
     @marshal_with(review_output_model)
     @review_api.response(200, "Review retrieved!")
     @review_api.response(404, "Review not found.")
@@ -105,7 +107,7 @@ class GetReview(Resource):
         return updated_review, 200
 
     @review_api.response(200, "Review successfully deleted")
-    @jwt_required
+    @jwt_required()
     def delete(self, review_id):
         current_user = get_jwt_identity()
         review = facade.get_review(review_id)
