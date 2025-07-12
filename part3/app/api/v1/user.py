@@ -30,8 +30,10 @@ user_output_model = user_api.model("UserOutputModel", {
 
 #now removing fields email and password, cannot be updated
 user_update_model = user_api.model("UserUpdate", {
-    "first_name": fields.String(),
-    "last_name": fields.String(),
+    "first_name": fields.String(required=True),
+    "last_name": fields.String(required=True),
+    "email": fields.String(),
+    "password": fields.String(),
     "is_admin": fields.Boolean()
 })
 
