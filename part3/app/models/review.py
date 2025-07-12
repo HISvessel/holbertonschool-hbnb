@@ -46,7 +46,7 @@ class Review(BaseClass):
             "title": self.title,
             "comment": self.comment,
             "rating": self.rating,
-            "user": self.user_id,
-            "place": self.place_id,
+            "user_id": self.user_id,
+            "place_id": self.place_id,
         })
         return data

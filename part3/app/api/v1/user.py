@@ -1,5 +1,5 @@
 from flask_restx import Resource, Namespace, fields, marshal_with, marshal
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required, get_jwt
 from app.services import facade
 
 
@@ -93,24 +93,28 @@ class UserGet(Resource):
     @jwt_required() #requires token authentication
     def put(self, user_id):
         user = facade.get_user(user_id)
-        current_user = get_jwt_identity()
+        current_user = get_jwt_identity() #retrieval of token
+        admin = get_jwt().get("is_admin", False) #gets admin from token
         if not user:
             return {"error": "User not found."}, 404
         
-        #blocks updating if the user is not the current user
-        if user != current_user:
+        #blocks updating if the user is not the current session user
+        #watch behaviour and confirm the input recieved is a string
+        if user.id != current_user:
             return {"message": "Unauthorized action."}, 403
         
-        
+
         data = user_api.payload
         update_data = {}
         fields = ["first_name", "last_name", "email", "password", "is_admin"]
+        restricted_fields = {"email", "password"}
         for key in data:
             if key not in fields:
                 continue
-            if key == "password" or key == "email": #this field now cannot be updated
-                #update_data["password"] = user._hash_password(data["password"])
+            if not admin and key in restricted_fields: #this field now cannot be updated
                 return {"message": "You cannot modify email or password"}, 403
+            if key == "password":    
+                update_data["password"] = user._hash_password(data["password"])
             else:
                 update_data[key] = data[key]
         updated_user = facade.update_user(user_id, update_data)
