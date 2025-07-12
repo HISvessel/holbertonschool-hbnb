@@ -11,7 +11,6 @@ review_model = review_api.model("ReviewModel", {
     "title": fields.String(required=True, description="Title for a review"),
     "comment": fields.String(required=True, description="Comments in a review"),
     "rating": fields.Integer,
-    "user_id": fields.String(required=True, description="Reviewers ID"),
     "place_id": fields.String(required=True, description="Place's ID")
 })
 
@@ -36,12 +35,27 @@ class ReviewCreation(Resource):
     @review_api.response(200, "Review added succesfully")
     @review_api.response(400, "Invalid review")
     @marshal_with(review_output_model)
-    @jwt_required()
+    @jwt_required() #token verification required
     def post(self):
         review_data = review_api.payload
-        current_user = get_jwt_identity()
-        review_data["user_id"] = current_user["id"]
+        current_user = get_jwt_identity() #user authentication
+        review_data["user_id"] = current_user #binds created review to session user's id
+
+        #find the place's owner id
+        place_id = review_data["place_id"]
+        place = facade.get_place(place_id)
+
+        all_reviews = facade.get_all_reviews()
         try:
+            #testing model to block a place owner reviewing their own place
+            if place.owner_id == current_user:
+                review_api.abort(403, "You cannot review your own place")
+            
+            #testing model to block a user from reviewing the same place twice
+            for review in all_reviews:
+                if review.user_id == current_user and review.place_id == review_data["place_id"]:
+                    review_api.abort(403, "You have already reviewed this place")
+
             new_review = facade.create_review(review_data)
             return new_review, 201
         except ValueError as e:
@@ -72,11 +86,13 @@ class GetReview(Resource):
     @marshal_with(review_output_model)
     @jwt_required()
     def put(self, review_id):
-        current_user = get_jwt_identity()
-        review = facade.get_review(review_id)
-        if not review:
+        current_user = get_jwt_identity() #authenticates session token
+        review = facade.get_review(review_id) #obtains review by id. string
+        if not review: #checks for the existence of a review
             review_api.abort(404, "Cannot find review.")
-        if review != current_user["id"]:
+        
+        #searches for app user's id and matches it to the session user's id
+        if review.user_id != current_user:
             review_api.abort(403, "Unauthorized action")
         data = review_api.payload
         allowed_field = ["title", "comment", "rating"]
@@ -89,8 +105,15 @@ class GetReview(Resource):
         return updated_review, 200
 
     @review_api.response(200, "Review successfully deleted")
+    @jwt_required
     def delete(self, review_id):
-        if not facade.get_review(review_id):
+        current_user = get_jwt_identity()
+        review = facade.get_review(review_id)
+        if not review:
             return {"error": "Review does not exist"}, 404
+        
+        #matches review's user id to the session user's token
+        if review.user_id != current_user:
+            return {"error": "Unauthorized action."}, 403
         facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}, 200
