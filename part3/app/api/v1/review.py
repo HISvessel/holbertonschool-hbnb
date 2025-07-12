@@ -14,11 +14,11 @@ review_model = review_api.model("ReviewModel", {
 })
 
 review_output_model = review_api.model("ReviewOutputModel", {
-    "id": fields.String,
+    "id": fields.String, #will test to confirm this field is the user_id or review_id
     "title": fields.String,
     "comment": fields.String,
     "rating": fields.Integer,
-    "owner_id": fields.String,
+    "user_id": fields.String,# pending deletion. must test if
     "created_at": fields.String,
     "updated_at": fields.String,
     })
