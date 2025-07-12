@@ -1,7 +1,7 @@
 """creating the file for our review class entity:
 pending changes, as this is for our initial folder structure"""
 from flask_restx import Namespace, fields, Resource, marshal_with
-from flask_jwt_extended import get_current_user, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.services import facade
 
 review_api = Namespace("review", description="Review endpoints")
@@ -39,7 +39,7 @@ class ReviewCreation(Resource):
     @jwt_required()
     def post(self):
         review_data = review_api.payload
-        current_user = get_current_user()
+        current_user = get_jwt_identity()
         review_data["user_id"] = current_user["id"]
         try:
             new_review = facade.create_review(review_data)
@@ -72,7 +72,7 @@ class GetReview(Resource):
     @marshal_with(review_output_model)
     @jwt_required()
     def put(self, review_id):
-        current_user = get_current_user()
+        current_user = get_jwt_identity()
         review = facade.get_review(review_id)
         if not review:
             review_api.abort(404, "Cannot find review.")
