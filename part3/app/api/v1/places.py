@@ -18,7 +18,7 @@ place_model = place_api.model("PlaceModel", {
     "latitude": fields.Float,
     "longitude": fields.Float,
     "owner_id": fields.String(required=True, description="owner of the place"),
-    "owner": fields.String(required=True, description='owner of the place'),
+    #"owner": fields.String(required=True, description='owner of the place'),
     "amenities": fields.List(fields.String, description="List of amenity IDs"),
     "reviews": fields.List(fields.String, description="List of review IDs")
 })
@@ -62,7 +62,7 @@ class CreatePlace(Resource):
     def post(self):
       current_user = get_jwt_identity()
       place_data = place_api.payload
-      place_data["user_id"] = current_user["id"]
+      place_data["owner_id"] = current_user
       try:
           place = facade.create_place(place_data)
           return place, 201
