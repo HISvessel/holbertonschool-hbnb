@@ -2,11 +2,15 @@
 from app.models.base_model import BaseClass
 import bcrypt
 import re
+from app import db
 
 
 class User(BaseClass):
+
     """Represents a user in our system."""
+    
     def __init__(self, first_name="", last_name="", email="", password="", is_admin=0):
+
         """Initialize a new user."""
         super().__init__()  # Call parent class constructor
         self.first_name = first_name
@@ -14,12 +18,18 @@ class User(BaseClass):
         self.email = email
         self.places = []
         self._is_admin = False  # Regular user by default
-        if is_admin == 1:
-            self.promote_to_admin()
+ 
 
         # Hash the password for security
     
         self.password_hash = self._hash_password(password) if password else None
+    
+    __tablename__ = 'users' #or instead here
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(db.String(120), nullable=False)
+    is_admin = db.Column(db.Boolean, defualt=False)
 
     def _hash_password(self, password):
         """Hash a password for storing."""
@@ -72,7 +82,7 @@ class User(BaseClass):
             raise ValueError("Admin status must be 0 or 1")
         self._is_admin = bool(status)
 
-    @property
+    @property #this might now be unreliable with database integration
     def is_admin(self):
         return self._is_admin
     
