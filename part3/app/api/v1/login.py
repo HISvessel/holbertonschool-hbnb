@@ -14,7 +14,7 @@ auth_model = auth_api.model("Login", {
 })
 
 """this route is created for authetication of user upon login"""
-@auth_api.route("/login")
+@auth_api.route("/login/")
 class Login(Resource):
     auth_api.expect(auth_model)
     def post(self):

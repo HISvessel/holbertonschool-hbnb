@@ -102,7 +102,7 @@ class UserGet(Resource):
         
         #blocks updating if the user is not the current session user
         #watch behaviour and confirm the input recieved is a string
-        if user.id != current_user:
+        if user.id != current_user and not admin:
             return {"message": "Unauthorized action."}, 403
         
 
