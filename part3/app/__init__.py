@@ -8,10 +8,12 @@ from app.api.v1.review import review_api
 from app.api.v1.login import auth_api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
-
+from flask_sqlalchemy import SQLAlchemy
+from app import db
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
+db = SQLAlchemy()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
@@ -19,6 +21,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     app.config.from_object(config_class)
     bcrypt.init_app(app)
     jwt.init_app(app)
+    db.init_app(app)
     
     #Placeholder for API namespace(endpoints will be added later)
     #additional namespaces for places, reviews, and ammenities will be added later
