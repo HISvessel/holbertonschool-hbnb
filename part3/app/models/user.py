@@ -29,7 +29,7 @@ class User(BaseClass):
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)
-    is_admin = db.Column(db.Boolean, defualt=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     def _hash_password(self, password):
         """Hash a password for storing."""
