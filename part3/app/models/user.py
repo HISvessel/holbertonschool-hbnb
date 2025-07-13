@@ -2,7 +2,7 @@
 from app.models.base_model import BaseClass
 import bcrypt
 import re
-from app import db
+from app.extensions.extensions import db
 
 
 class User(BaseClass):

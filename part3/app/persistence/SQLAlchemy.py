@@ -1,6 +1,6 @@
 """this document begins a persistent database class for business rules
 and database rules alike"""
-from app import db
+from app.extensions.extensions import db
 from app.models.user import User
 from app.models.places import Place
 from app.models.review import Review

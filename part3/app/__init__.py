@@ -1,6 +1,7 @@
 """init mrthod to call and run the whole app"""
 from flask import Flask
 from flask_restx import Api
+from app.extensions.extensions import db
 from app.api.v1.user import user_api
 from app.api.v1.amenity import amenity_api
 from app.api.v1.places import place_api
@@ -9,11 +10,9 @@ from app.api.v1.login import auth_api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
-from app import db
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
-db = SQLAlchemy()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)

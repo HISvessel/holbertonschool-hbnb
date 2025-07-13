@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from app import db
+from app.extensions.extensions import db
 
 """this module contains a base class that
 defines methods that will be inherited by our
