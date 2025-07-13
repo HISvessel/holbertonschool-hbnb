@@ -40,4 +40,4 @@ class SQLAlchemyRepository(Repository):
         #attr = getattr(attr_name, attr_value)
         #if attr is None:
         #    return None
-        return self.model.query.filter(getattr(attr_name, attr_value) == attr_value).first()
+        return self.model.query.filter_by(**{attr_name: attr_value}).first()

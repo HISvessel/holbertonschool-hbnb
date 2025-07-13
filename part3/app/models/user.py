@@ -17,18 +17,18 @@ class User(BaseClass):
         self.last_name = last_name
         self.email = email
         self.places = []
-        self._is_admin = False  # Regular user by default
+        self.is_admin = bool(is_admin) # Regular user by default
  
 
         # Hash the password for security
-    
-        self.password_hash = self._hash_password(password) if password else None
+        #removed the hash segment from variable
+        self.password = self._hash_password(password) if password else None
     
     __tablename__ = 'users' #or instead here
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(120), nullable=False)
+    password= db.Column(db.String(120), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
     def _hash_password(self, password):
@@ -38,11 +38,11 @@ class User(BaseClass):
         return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
     
     def verify_password(self, password):
-        if not self.password_hash:
+        if not self.password: #removed the has segment from variable
             return False
         return bcrypt.checkpw(
             password.encode('utf-8'), 
-            self.password_hash.encode('utf-8') # remove the variable, simply result later
+            self.password.encode('utf-8') # removed the hash segment from variable
         )
 
     def validate(self):
@@ -64,7 +64,7 @@ class User(BaseClass):
             errors.append("Invalid email format")
         
         # Check password
-        if not self.password_hash:
+        if not self.password: #removed hash keyword from variable name
             errors.append("Password is required")
         
         return errors
@@ -73,24 +73,13 @@ class User(BaseClass):
         """Check if email format is valid."""
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(pattern, email) is not None
-    
-    def set_admin_status(self, status):
-        #set admin status using True/False
-        if not isinstance(status, int):
-            raise TypeError("Status must be an int(0 or 1)")
-        if status not in (0, 1):
-            raise ValueError("Admin status must be 0 or 1")
-        self._is_admin = bool(status)
 
-    @property #this might now be unreliable with database integration
-    def is_admin(self):
-        return self._is_admin
-    
+
     def promote_to_admin(self):
-        self._is_admin = True
+        self.is_admin = True
     
     def demote_from_admin(self):
-        self._is_admin = False
+        self.is_admin = False
 
     def add_place(self, place):
         if self.is_admin == True and place not in self.places:
