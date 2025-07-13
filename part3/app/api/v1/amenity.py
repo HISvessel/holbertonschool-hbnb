@@ -2,6 +2,7 @@
 pending changes, as this is for our initial file structure"""
 
 from flask_restx import Namespace, fields, Resource, marshal_with
+from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required
 from app.services import facade
 
 amenity_api = Namespace("amenity", description="Amenity endpoints")
@@ -24,11 +25,17 @@ amenity_update_model = amenity_api.model("AmenityUpdate", {
 @amenity_api.route("/")
 class AmenityCreation(Resource):
     @amenity_api.expect(amenity_model, validate=True)
-    @amenity_api.response(200, "Amenity added succesfully")
+    @amenity_api.response(201, "Amenity added succesfully")
     @amenity_api.response(400, "Invalid amenity")
     @marshal_with(amenity_output_model)
+    @jwt_required()
     def post(self):
         amenity_data = amenity_api.payload
+        admin = get_jwt().get("is_admin", False)
+
+        if not admin:
+            amenity_api.abort(403, "Unauthorized action.")
+
         try:
             new_amenity = facade.create_amenity(amenity_data)
             return new_amenity, 201
@@ -60,11 +67,16 @@ class UpdateAmenity(Resource):
     @amenity_api.response(200, "Amenity successfully updated")
     @amenity_api.response(404, "Amenity cannot be found")
     @marshal_with(amenity_output_model)
-
+    @jwt_required()
     def put(self, amenity_id):
         amenity = facade.get_amenity(amenity_id)
+        admin = get_jwt().get("is_admin", False)
+
         if not amenity:
             amenity_api.abort(404, "Amenity cannot be found")
+        
+        if not admin:
+            amenity_api.abort(403, "Unauthorized actions")
         data = amenity_api.payload
         allowed_field = ["name"]
         updated_data = {}
