@@ -1,6 +1,6 @@
 """the first creation of our place class; pending changes, as these are for structure"""
 from flask_restx import Namespace, fields, Resource, marshal_with
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required, get_jwt
 from app.services import facade
 
 
@@ -98,9 +98,10 @@ class GetPlace(Resource):
         data = place_api.payload
         place = facade.get_place(place_id)
         current_user = get_jwt_identity() #retrieving current user upon method
-        
+        admin = get_jwt().get("is_admin", False)
+
         #checking that place id maches the current user's id
-        if place.owner_id != current_user:
+        if not admin and place.owner_id != current_user:
             place_api.abort(403, "Unauthorized action.")
         if not place:
             place_api.abort(404, "Place not found")

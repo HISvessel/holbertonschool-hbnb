@@ -1,7 +1,7 @@
 """creating the file for our review class entity:
 pending changes, as this is for our initial folder structure"""
 from flask_restx import Namespace, fields, Resource, marshal_with
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required, get_jwt
 from app.services import facade
 
 review_api = Namespace("review", description="Review endpoints")
@@ -91,12 +91,16 @@ class ReviewDetails(Resource):
     def put(self, review_id):
         current_user = get_jwt_identity() #authenticates session token
         review = facade.get_review(review_id) #obtains review by id. string
-        if not review: #checks for the existence of a review
+        admin = get_jwt().get("is_admin", False)
+
+        #checks that a review exists
+        if not review:
             review_api.abort(404, "Cannot find review.")
         
         #searches for app user's id and matches it to the session user's id
-        if review.user_id != current_user:
+        if not admin and review.user_id != current_user:
             review_api.abort(403, "Unauthorized action")
+        
         data = review_api.payload
         allowed_field = ["title", "comment", "rating"]
         updated_data = {}
@@ -112,11 +116,14 @@ class ReviewDetails(Resource):
     def delete(self, review_id):
         current_user = get_jwt_identity()
         review = facade.get_review(review_id)
+        admin = get_jwt().get("is_admin", False)
+
         if not review:
             return {"error": "Review does not exist"}, 404
         
         #matches review's user id to the session user's token
-        if review.user_id != current_user:
+        if not admin and review.user_id != current_user:
             return {"error": "Unauthorized action."}, 403
+        
         facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}, 200
