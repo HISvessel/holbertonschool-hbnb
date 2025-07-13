@@ -45,8 +45,20 @@ class UserList(Resource):
     @user_api.response(400, "Invalid email entered")
     @user_api.response(400, 'Invalid password')
     @marshal_with(user_output_model)
+    #@jwt_required()
     def post(self):
         user_data = user_api.payload
+        #current_user = get_jwt_identity()
+        #admin = get_jwt().get("is_admin", False)
+        existing_mail = facade.get_user_by_email(user_data["email"])
+
+        #checks for session user or for admin
+        #if not current_user or not admin:
+        #    user_api.abort(403, "Admininstrator privileges required.")
+            
+        #prevents creation of account with an already registered email
+        if existing_mail:
+           user_api.abort(400, "Email already registered.")
 
         try:
             new_user = facade.create_user(user_data)
@@ -101,7 +113,6 @@ class UserGet(Resource):
             return {"error": "User not found."}, 404
         
         #blocks updating if the user is not the current session user
-        #watch behaviour and confirm the input recieved is a string
         if user.id != current_user and not admin:
             return {"message": "Unauthorized action."}, 403
         
