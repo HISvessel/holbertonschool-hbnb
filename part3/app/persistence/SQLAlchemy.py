@@ -25,7 +25,7 @@ class SQLAlchemyRepository(Repository):
         obj = self.get(obj_id)
         if obj:
             for key, value in data.items():
-                if hasattr(data, obj):
+                if hasattr(obj, key): #changed instance, obtain attribute from key and not obj
                     setattr(obj, key, value)
                 db.session.commit()
     
@@ -35,5 +35,9 @@ class SQLAlchemyRepository(Repository):
             db.session.delete(obj)
             db.session.commit()
     
+    #does not check if attribute does not exist. pending changes
     def get_by_attribute(self, attr_name, attr_value):
+        #attr = getattr(attr_name, attr_value)
+        #if attr is None:
+        #    return None
         return self.model.query.filter(getattr(attr_name, attr_value) == attr_value).first()
