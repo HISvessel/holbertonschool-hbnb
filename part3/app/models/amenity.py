@@ -2,6 +2,7 @@
 pending further elaboration, since this is for the structure of folders"""
 from app.models.base_model import BaseClass
 from app.extensions.extensions import db
+from sqlalchemy import Table, Integer, String, Column, ForeignKey
 
 
 class Amenity(BaseClass):
@@ -9,9 +10,11 @@ class Amenity(BaseClass):
         super().__init__()
         self.name = name
 
+
     __tablename__ = 'amenities'
+    #id = db.Column(db.String(60), primary_key=True)
     name = db.Column(db.String, nullable=False)
-    place_id = db.Column(db.String, db.ForeignKey("places.id"), nullable=False)
+    #place_id = db.Column(db.String, db.ForeignKey("places.id"), nullable=False)
 
     def validate(self):
         errors = []

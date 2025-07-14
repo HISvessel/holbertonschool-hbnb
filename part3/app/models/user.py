@@ -3,6 +3,7 @@ from app.models.base_model import BaseClass
 import bcrypt
 import re
 from app.extensions.extensions import db
+from sqlalchemy.orm import validates, relationship
 
 
 class User(BaseClass):
@@ -25,11 +26,15 @@ class User(BaseClass):
         self.password = self._hash_password(password) if password else None
     
     __tablename__ = 'users' #or instead here
+    #id = db.Column(db.String(60), primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password= db.Column(db.String(120), nullable=False, unique=True)
     is_admin = db.Column(db.Boolean, default=False)
+
+    places = relationship('Place', backref='owner', lazy=True, cascade='all, delete_orphan')
+    review = relationship('Review', backref='user', lazy=True, cascade='all, delete_orphan')
 
     def _hash_password(self, password):
         """Hash a password for storing."""

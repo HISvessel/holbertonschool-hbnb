@@ -2,7 +2,9 @@
 pending edition, since this is for the structure of our files"""
 from app.models.base_model import BaseClass
 from app.extensions.extensions import db
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
+
+
 class Review(BaseClass):
     def __init__(self, user_id='', title='',  comment='', rating=0, place_id=''):
         super().__init__()
@@ -13,11 +15,12 @@ class Review(BaseClass):
         self.place_id = place_id
     
     __tablename__ = 'reviews'
+    #id = db.Column(db.String(60), primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     comment = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.String(100), db.ForeignKey("users.id"), nullable=False)
-    place_id = db.Column(db.String(120), db.ForeignKey("places.id"), nullable=False) #make this a foreign key referencing place.id
+    place_id = db.Column(db.String(120), db.ForeignKey("places.id"), nullable=False)
 
     def validate(self):
         errors = []

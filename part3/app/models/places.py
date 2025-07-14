@@ -2,8 +2,13 @@
 as this is for file structure"""
 from app.models.base_model import BaseClass
 from app.extensions.extensions import db
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 
+
+featured_amenities = db.Table('featured_amenities', 
+db.Column('place_id', db.String(60), db.ForeignKey('places.id'), primary_key=True),
+db.Column('amenity_id', db.String(60), db.ForeignKey('amenities.id'), primary_key=True)
+)
 
 class Place(BaseClass):
     def __init__(self, title='', description='', owner_id='',
@@ -17,19 +22,21 @@ class Place(BaseClass):
         self.owner_id = owner_id
         self.amenities = amenities if amenities is not None else []
         self.reviews = reviews if reviews is not None else []
-
-        #self.price = price
-        #self.latitude = latitude
-        #self.longitude = longitude
     
     __tablename__ = 'places'
+    #id = db.Column(db.String(60), primary_key= True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    owner_id = db.Column(db.String, db.ForeignKey("users.id"), nullable=False) # will make a foreign key referencing user.id
+    owner_id = db.Column(db.String, db.ForeignKey("users.id"), nullable=False)
     
+    reviews = relationship('Review', backref='place', lazy=True, cascade='all, delete-orphan')
+    amenities = db.relationship('Amenity', secondary='featured_amenities', lazy='subquery',
+                                backref=db.backref('amenities', lazy=True)) 
+
+
     @validates('price')
     def validate_price(self, key, value):
         try:
