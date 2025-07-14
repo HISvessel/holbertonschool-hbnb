@@ -1,7 +1,7 @@
 """this is the creation of the file for the review entity:
 pending edition, since this is for the structure of our files"""
 from app.models.base_model import BaseClass
-
+from app.extensions.extensions import db
 
 class Review(BaseClass):
     def __init__(self, user_id='', title='',  comment='', rating=0, place_id=''):
@@ -11,6 +11,14 @@ class Review(BaseClass):
         self.comment = comment
         self._rating = rating
         self.place_id = place_id
+    
+    __tablename__ = 'reviews'
+    id = db.Column(db.String, nullable=False)#make a primary key
+    title = db.Column(db.String(120), nullable=False)
+    comment = db.Column(db.Text, nullable=False)
+    _rating = db.Column(db.Int, nullable=False)
+    user_id = db.column(db.String(100), nullable=False) #make this a foreign key user.id
+    place_id = db.Column(db.String(120), nullable=False) #make this a foreign key referencing place.id
 
     def validate(self):
         errors = []
