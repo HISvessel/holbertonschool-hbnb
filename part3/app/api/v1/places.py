@@ -2,6 +2,8 @@
 from flask_restx import Namespace, fields, Resource, marshal_with
 from flask_jwt_extended import get_jwt_identity, jwt_required, get_jwt
 from app.services import facade
+from app.api.v1.review import review_model
+from app.api.v1.amenity import amenity_model
 
 
 
@@ -18,8 +20,8 @@ place_model = place_api.model("PlaceModel", {
     "latitude": fields.Float,
     "longitude": fields.Float,
     "owner_id": fields.String(required=True, description="owner of the place"),
-    "amenities": fields.List(fields.String, description="List of amenity IDs"),
-    "reviews": fields.List(fields.String, description="List of review IDs")
+    "amenities": fields.List(fields.Nested(amenity_model)),
+    "reviews": fields.List(fields.Nested(review_model))
 })
 
 place_output_model = place_api.model("PlaceOutput", {
