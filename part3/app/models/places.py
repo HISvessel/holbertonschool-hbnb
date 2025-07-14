@@ -2,6 +2,8 @@
 as this is for file structure"""
 from app.models.base_model import BaseClass
 from app.extensions.extensions import db
+from sqlalchemy.orm import validates
+
 
 class Place(BaseClass):
     def __init__(self, title='', description='', owner_id='',
@@ -9,16 +11,16 @@ class Place(BaseClass):
         super().__init__()
         self.title = title
         self.description = description
-        self._price = 0
-        self._latitude = 0
-        self._longitude = 0
+        self.price = price # not underscore
+        self.latitude = latitude
+        self.longitude = longitude
         self.owner_id = owner_id
         self.amenities = amenities if amenities is not None else []
         self.reviews = reviews if reviews is not None else []
 
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
+        #self.price = price
+        #self.latitude = latitude
+        #self.longitude = longitude
     
     __tablename__ = 'places'
     title = db.Column(db.String(100), nullable=False)
@@ -26,49 +28,37 @@ class Place(BaseClass):
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    owner_id = db.Column(db.String, nullable=False) # will make a foreign key referencing user.id
+    owner_id = db.Column(db.String, db.ForeignKey("users.id"), nullable=False) # will make a foreign key referencing user.id
     
-    @property
-    def price(self):
-        return self._price
-    
-    @price.setter
-    def price(self, value):
+    @validates('price')
+    def validate_price(self, key, value):
+        try:
+           value = float(value)
+        except (ValueError, TypeError):
+            raise TypeError("Price must be a float")
+        if value < 0:
+            raise ValueError("Price cannot be negative")
+        return value
+
+    @validates('latitude')
+    def validate_latitude(self, key, value):
         try:
             value = float(value)
-        except (TypeError, ValueError):
-            raise TypeError("Price must be a number")
-        if value < 0:
-            raise ValueError("Price must not be less than 0")
-        self._price = value
-    
-    @property
-    def latitude(self):
-        return self._latitude
-    
-    @latitude.setter
-    def latitude(self, point_y):
-        try:
-            point_y = float(point_y)
         except(ValueError, TypeError):
             raise TypeError("Latitude must be float")
-        if not (-90.0 <= point_y <= 90.0):
+        if not (-90.0 <= value <= 90.0):
             raise ValueError("Place a correct latitude: values between -90.0 and 90.0")
-        self._latitude = point_y
-    
-    @property
-    def longitude(self):
-        return self._longitude
-    
-    @longitude.setter
-    def longitude(self, point_x):
+        return value
+
+    @validates('longitude')
+    def validate_longitude(self, key, value):
         try:
-            point_x = float(point_x)
+            value = float(value)
         except(ValueError, TypeError):
             raise TypeError("Longitude must be float")
-        if not (-180.0 <= point_x <= 180.0):
+        if not (-180.0 <= value <= 180.0):
             raise ValueError("Place a correct longitude: values between -180.0 and 180.0")
-        self._longitude = point_x
+        return value
 
     def validate(self):
         errors = []
@@ -109,12 +99,12 @@ class Place(BaseClass):
         data.update({
             "title": self.title,
             "description": self.description,
-            "price": self._price,
+            "price": self.price,
             #"coordinates": {self._latitude, self._longitude},
             "latitude": self.latitude,
             "longitude": self.longitude,
             "owner": self.owner_id,
-            "amenities": self.amenities,
-            "reviews": self.reviews
+            #"amenities": self.amenities,
+            #"reviews": self.reviews
         })
         return data

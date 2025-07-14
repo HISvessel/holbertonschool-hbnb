@@ -2,23 +2,22 @@
 pending edition, since this is for the structure of our files"""
 from app.models.base_model import BaseClass
 from app.extensions.extensions import db
-
+from sqlalchemy.orm import validates
 class Review(BaseClass):
     def __init__(self, user_id='', title='',  comment='', rating=0, place_id=''):
         super().__init__()
         self.user_id = user_id
         self.title = title
         self.comment = comment
-        self._rating = rating
+        self.rating = rating
         self.place_id = place_id
     
     __tablename__ = 'reviews'
-    id = db.Column(db.String, nullable=False)#make a primary key
     title = db.Column(db.String(120), nullable=False)
     comment = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    user_id = db.column(db.String(100), nullable=False) #make this a foreign key user.id
-    place_id = db.Column(db.String(120), nullable=False) #make this a foreign key referencing place.id
+    user_id = db.Column(db.String(100), db.ForeignKey("users.id"), nullable=False)
+    place_id = db.Column(db.String(120), db.ForeignKey("places.id"), nullable=False) #make this a foreign key referencing place.id
 
     def validate(self):
         errors = []
@@ -34,18 +33,15 @@ class Review(BaseClass):
             errors.append("Rating must be an integer between 1 and 5.")
         return errors
 
-    @property
-    def rating(self):
-        return self._rating
-
-    @rating.setter
-    def rating(self, input):
-        if input < 1:
+    @validates('rating')
+    def validate_rating(self, key, value):
+        try:
+            value = int(value)
+        except(TypeError, ValueError):
+            raise TypeError("Rating must be an integer")
+        if value < 1:
             raise ValueError("Input must be higher than 0")
-        #checking or type checking with isinstance, not TypeError
-        if not isinstance(input, int):
-            raise TypeError("Input must be an int")
-        self._rating = input
+        return value
 
 
     def to_dict(self):

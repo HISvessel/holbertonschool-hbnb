@@ -10,8 +10,8 @@ class Amenity(BaseClass):
         self.name = name
 
     __tablename__ = 'amenities'
-    id = db.Column(db.String, nullable=False) #makes for primary key
     name = db.Column(db.String, nullable=False)
+    place_id = db.Column(db.String, db.ForeignKey("places.id"), nullable=False)
 
     def validate(self):
         errors = []
