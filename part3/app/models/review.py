@@ -16,7 +16,7 @@ class Review(BaseClass):
     id = db.Column(db.String, nullable=False)#make a primary key
     title = db.Column(db.String(120), nullable=False)
     comment = db.Column(db.Text, nullable=False)
-    _rating = db.Column(db.Int, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
     user_id = db.column(db.String(100), nullable=False) #make this a foreign key user.id
     place_id = db.Column(db.String(120), nullable=False) #make this a foreign key referencing place.id
 

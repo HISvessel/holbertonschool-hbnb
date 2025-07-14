@@ -23,9 +23,9 @@ class Place(BaseClass):
     __tablename__ = 'places'
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    _price = db.Column(db.Float, nullable=False)
-    _latitude = db.Column(db.Float, nullable=False)
-    _longitude = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String, nullable=False) # will make a foreign key referencing user.id
     
     @property
