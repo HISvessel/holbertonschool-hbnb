@@ -17,7 +17,7 @@ class User(BaseClass):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.places = []
+        #self.places = []
         self.is_admin = bool(is_admin) # Regular user by default
  
 
@@ -33,8 +33,8 @@ class User(BaseClass):
     password= db.Column(db.String(120), nullable=False, unique=True)
     is_admin = db.Column(db.Boolean, default=False)
 
-    places = relationship('Place', backref='owner', lazy=True, cascade='all, delete_orphan')
-    review = relationship('Review', backref='user', lazy=True, cascade='all, delete_orphan')
+    places = relationship('Place', backref='owner', lazy=True, cascade='all, delete-orphan')
+    review = relationship('Review', backref='user', lazy=True, cascade='all, delete-orphan')
 
     def _hash_password(self, password):
         """Hash a password for storing."""

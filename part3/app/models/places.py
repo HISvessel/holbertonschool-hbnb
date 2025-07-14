@@ -20,11 +20,10 @@ class Place(BaseClass):
         self.latitude = latitude
         self.longitude = longitude
         self.owner_id = owner_id
-        self.amenities = amenities if amenities is not None else []
-        self.reviews = reviews if reviews is not None else []
+        #self.amenities = amenities if amenities is not None else []
+        #self.reviews = reviews if reviews is not None else []
     
     __tablename__ = 'places'
-    #id = db.Column(db.String(60), primary_key= True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -33,7 +32,7 @@ class Place(BaseClass):
     owner_id = db.Column(db.String, db.ForeignKey("users.id"), nullable=False)
     
     reviews = relationship('Review', backref='place', lazy=True, cascade='all, delete-orphan')
-    amenities = db.relationship('Amenity', secondary='featured_amenities', lazy='subquery',
+    amenities = relationship('Amenity', secondary='featured_amenities', lazy='subquery',
                                 backref=db.backref('amenities', lazy=True)) 
 
 
