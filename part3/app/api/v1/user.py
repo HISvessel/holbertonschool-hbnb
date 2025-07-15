@@ -1,6 +1,8 @@
 from flask_restx import Resource, Namespace, fields, marshal_with, marshal
 from flask_jwt_extended import get_jwt_identity, jwt_required, get_jwt
 from app.services import facade
+from app.api.v1.review import review_model
+from app.api.v1.places import place_model
 
 
 user_api = Namespace("users", description="User operations")
@@ -24,6 +26,8 @@ user_output_model = user_api.model("UserOutputModel", {
     "last_name": fields.String,
     "email": fields.String,
     "is_admin": fields.Boolean,
+    "places_owned": fields.List(fields.Nested(place_model)),
+    "reviews_listed": fields.List(fields.Nested(review_model)),
     "created_at":fields.DateTime,
     "updated_at": fields.DateTime
 })

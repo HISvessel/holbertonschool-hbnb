@@ -39,8 +39,8 @@ place_output_model = place_api.model("PlaceOutput", {
     "latitude": fields.Float,
     "longitude": fields.Float,
     "owner_id": fields.String,
-    "amenities": fields.List(fields.String, description="List of amenity IDs"),
-    "reviews": fields.List(fields.String, description="List of review IDs")
+    "amenities": fields.List(fields.Nested(amenity_model)),
+    "reviews": fields.List(fields.Nested(review_model))
 })
 
 place_update_model = place_api.model("PlaceUpdateModel", {

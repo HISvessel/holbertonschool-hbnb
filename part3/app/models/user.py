@@ -17,7 +17,6 @@ class User(BaseClass):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        #self.places = []
         self.is_admin = bool(is_admin) # Regular user by default
  
 
@@ -25,8 +24,7 @@ class User(BaseClass):
         #removed the hash segment from variable
         self.password = self._hash_password(password) if password else None
     
-    __tablename__ = 'users' #or instead here
-    #id = db.Column(db.String(60), primary_key=True)
+    __tablename__ = 'users'
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
@@ -97,6 +95,8 @@ class User(BaseClass):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'email': self.email,
+            "places_owned": [place.to_dict() for place in self.places],
+            "reviews_listed": [review.to_dict() for review in self.review],
             'is_admin': self.is_admin
         })
         # Never include password in response!
