@@ -7,8 +7,8 @@ INSERT INTO users (id, first_name, last_name, email, password, is_admin) VALUES(
 '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
 'Admin',
 'Hbnb',
-'admin@hbnb.io'
-'$2b$12$D1ynRT8fDn2jkDwM1asGEOv/4kW7cO29tchcN2cUyXnKFDLLuv27m'
+'admin@hbnb.io',
+'$2b$12$D1ynRT8fDn2jkDwM1asGEOv/4kW7cO29tchcN2cUyXnKFDLLuv27m',
 TRUE
 );
 

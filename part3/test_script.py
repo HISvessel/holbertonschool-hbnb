@@ -13,7 +13,7 @@ def insert_admin(cursor):
     admin = User("Admin", "Hbnb", "admin@hbnb.io", "admin1234", is_admin=True)
     admin.id = ADMIN_ID
 
-    cursor.execute("""INSERT INTO INTO user (id, first_name, last_name, email, password, is_admin)
+    cursor.execute("""INSERT INTO INTO users (id, first_name, last_name, email, password, is_admin)
         VALUES (?, ?, ?, ?, ?, ?)""", admin.first_name, admin.last_name, admin.email, admin.password, admin.is_admin)
     
     print("Administrator added successfully")
@@ -21,7 +21,7 @@ def insert_admin(cursor):
 def insert_amenity(cursor):
     for name in initial_amenities:
         amenity_id = str(uuid4())
-        cursor.execute("""INSERT OR IGNORE INTO amenities (id, name) VALUES (?, ?)""",
+        cursor.execute("""INSERT INTO amenities (id, name) VALUES (?, ?)""",
                         (amenity_id.name))
         print(f"Amenity inserted: {name}")
 

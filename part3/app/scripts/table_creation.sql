@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS reviews (
     comment VARCHAR(255) NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     user_id VARCHAR(255), 
-    place_id VARCHAR(255),.
+    place_id VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (place_id) REFERENCES places(id),
     UNIQUE(user_id, place_id)
@@ -36,13 +36,13 @@ CREATE TABLE IF NOT EXISTS reviews (
 
 CREATE TABLE IF NOT EXISTS amenities (
     id VARCHAR (60) PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS places_amenities (
     place_id VARCHAR(60),
     amenity_id VARCHAR(60),
-    PRIMARY KEYS (place_id, amenity_id),
+    PRIMARY KEY (place_id, amenity_id),
     FOREIGN KEY (amenity_id) REFERENCES amenities(id),
     FOREIGN KEY (place_id) REFERENCES places(id)
 );
