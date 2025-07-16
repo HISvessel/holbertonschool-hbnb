@@ -16,7 +16,7 @@ jwt = JWTManager()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
-    my_api = Api(app, version='1.0', title='Hbnb API', description='Hbnb Application API', doc='/api/v1')
+    my_api = Api(app, version='1.0', title='Hbnb API', description='Hbnb Application API', url_prefix='/api/v1')
     app.config.from_object(config_class)
     bcrypt.init_app(app)
     jwt.init_app(app)
