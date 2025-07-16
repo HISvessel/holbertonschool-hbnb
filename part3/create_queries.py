@@ -1,8 +1,3 @@
-from app.models.amenity import Amenity
-from app.models.places import Place
-from app.models.review import Review
-from app.models.user import User
-from uuid import uuid4
 
 
 def create_amenity(cursor, amenity):
