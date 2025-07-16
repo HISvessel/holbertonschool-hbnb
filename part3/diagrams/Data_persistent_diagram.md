@@ -2,6 +2,7 @@
 ## Diagram
 
 ```mermaid
+
 erDiagram
 USER {
     string id PK
