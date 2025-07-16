@@ -17,8 +17,7 @@ def create_place(cursor, place):
                     place.price,
                     place.latitude,
                     place.longitude,
-                    place.owner_id
-                    ))
+                    place.owner_id))
     
 def create_review(cursor, review):
     """creates a review if not exists

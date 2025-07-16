@@ -1,5 +1,5 @@
 def update_user_email(cursor, user_id, email):
-    cursor.execute("UPDATE users SET email =? WHERE id = ?", (email, user_id))
+    cursor.execute("UPDATE users SET email = ? WHERE id = ?", (email, user_id))
     return cursor.rowcount
 
 def update_user_password(cursor, user_id, password):

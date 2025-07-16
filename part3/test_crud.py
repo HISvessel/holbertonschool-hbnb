@@ -38,7 +38,7 @@ def run_tests():
     amenity.id = str(uuid4())
     amenity.name = "Test Amenity"
 
-    review = Review(str(uuid4()), 'Nice Stay', 'It was a great time', 4)
+    review = Review(str(uuid4()),'Nice Stay', 'It was a great time', 4)
     #review.id = str(uuid4())
     #review.title = "Nice stay"
     #review.comment = "It was a great time"
