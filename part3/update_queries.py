@@ -23,7 +23,7 @@ def update_review_rating(cursor, review_id, rating):
     return cursor.rowcount
 
 def update_review_comment(cursor, review_id, comment):
-    cursor.executez("UPDATE reviews SET comment = ? WHERE id = ?", (comment, review_id))
+    cursor.execute("UPDATE reviews SET comment = ? WHERE id = ?", (comment, review_id))
     return cursor.rowcount
 
 def update_amenity_name(cursor, amenity_id, name):

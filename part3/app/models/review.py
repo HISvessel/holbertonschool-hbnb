@@ -11,7 +11,7 @@ class Review(BaseClass):
         self.user_id = user_id
         self.title = title
         self.comment = comment
-        self.rating = rating
+        self.rating = rating if rating else 0
         self.place_id = place_id
     
     __tablename__ = 'reviews'
@@ -42,7 +42,7 @@ class Review(BaseClass):
             value = int(value)
         except(TypeError, ValueError):
             raise TypeError("Rating must be an integer")
-        if value < 1:
+        if not 1 <= value <= 5:
             raise ValueError("Input must be higher than 0")
         return value
 
