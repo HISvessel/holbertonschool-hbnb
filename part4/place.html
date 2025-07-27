@@ -29,12 +29,25 @@
         </section>
         <section id="add-review">
             <h2>Add a Review</h2>
-            <form id="review-form">
-                <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
+            <div>
+                <form id="review-form">
+                    <div id="review-text">
+                        <label for="review-text">Review:</label>
+                        <textarea id="review-text" name="review-text" required></textarea>
+                    </div>
+                    
+                    <div id="rating-input">
+                    <label for="rating">Rating:</label>
+                        <label><input type="radio" name="rating" value="1" required>1</label>
+                        <label><input type="radio" name="rating" value="2">2</label>
+                        <label><input type="radio" name="rating" value="3">3</label>
+                        <label><input type="radio" name="rating" value="4">4</label>
+                        <label><input type="radio" name="rating" value="5">5</label>
+                    </div>
                 
-                <button type="submit">Submit</button>
-            </form>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </section>
     </main>
     <footer>
