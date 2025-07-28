@@ -7,18 +7,73 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Helvetica-neue", Arial, Helvetica, sans-serif;
 }
 
 body {
+    line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
+    padding-bottom: 60px;
 }
 
-header {
+section {
+    background-color: #f9f9f9;
+}
+
+header, footer {
     background-color: #333;
     color: #fff;
-    padding: 1rem;
+    padding: 1rem 2em;
+    border-bottom: 1px solid #ddd;
+}
+
+header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1em;
+}
+
+nav a {
+    text-decoration: none;
+    color: #444;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1000px;
+    margin: 2em auto;
+    padding: 0 1em;
+}
+
+footer{
+    text-align: center;
+    padding: 1em;
+    background-color: #eee;
+    color: #666;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.place-card{
+    background: white;
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+.review-card {
+    border: 1px solic #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius:  5px;
 }
 
 nav a {
