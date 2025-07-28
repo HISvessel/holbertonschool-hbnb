@@ -21,13 +21,35 @@
         </div>
     </header>
     <main>
+
+        <!-- place template section -->
         <section id="place-details">
             <!-- Place details will be populated dynamically -->
+             <template id="place-template">
+                <article class="place-details place-info">
+                    <h2 class="place-name"></h2>
+                    <p class="place-host"></p>
+                    <p class="place-price"></p>
+                    <p class="place-description"></p>
+                    <p class="place-amenities"></p>
+                </article>
+             </template>
         </section>
+
+        <!-- review section -->
         <section id="reviews">
+            <h3>Reviews</h3>
             <!-- Reviews will be populated dynamically -->
+             <template id="review-template">
+                <div class="review-card">
+                    <h4 class="reviewer-name"></h4>
+                    <p class="review-comment"></p>
+                    <p class="review-rating"></p> <!--should have star shaped input label-->
+                </div>
+             </template>
         </section>
-        <section id="add-review">
+
+        <section id="add-review" class="hidden-if-not-logged-in">
             <h2>Add a Review</h2>
             <div>
                 <form id="review-form">

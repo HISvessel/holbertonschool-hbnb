@@ -19,24 +19,37 @@
             </nav>
         </div>
     </header>
+
     <main>
+
+        <!-- search filter buttons -->
         <section id="filter">
             <h2>Available Places</h2>
             <form id="filter-form">
             <label for="price-filter">Max Price:</label>
             <select id="price-filter">
                 <!-- Options will be populated dynamically -->
+ 
             </select>
             <label for="amenity-filter">Amenities:</label>
             <select id="amenity-filter">
                 <!-- Options will be populated dynamically-->
+
             </form>
             </select>
         </section>
 
+        <!-- place list templates -->
         <section id="places-list">
             <!-- List of places will be populated dynamically -->
-        </section>
+             <template id="place-template">
+                <div class="place-card">
+                    <h3 class="place-name"></h3>
+                    <p class="place-price"></p>
+                    <button class="details-button">View Details</button>
+                </div>
+            </template>
+            </section>
     </main>
     <footer> 
         &copy; 2025 Holberton Coding School. All rights reserved.
