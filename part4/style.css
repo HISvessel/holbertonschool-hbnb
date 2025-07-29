@@ -6,15 +6,15 @@
 * {
     box-sizing: border-box;
     margin: 0;
-    padding: 0;
+    padding: 0; /*removes default settings*/
 }
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.6;
+    line-height: 1.6; /*adding enough space between lines*/
     background-color: #f4f4f4;
     color: #333;
-    padding-bottom: 60px;
+    padding-bottom: 60px; /*vertical pad for the bottom*/
 }
 
 section {
@@ -44,6 +44,10 @@ nav a {
     text-decoration: none;
     color: #444;
     font-weight: bold;
+}
+
+nav a:hover {
+     color: #007BFF; /* hover effect for anchored links*/
 }
 
 main {
