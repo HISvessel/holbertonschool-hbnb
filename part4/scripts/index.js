@@ -4,48 +4,73 @@ function checkAuthentication() {
 
   if (!token) {
     loginLink.style.display = 'block';
+    console.log("Cookies not fetched")
   } else {
     loginLink.style.display = `none`; //we will attempt to reveal the user's name
-    fetchPlaces('token');
+    fetchPlaces(token);
   }
 }
 
 function getCookie(name) {
   const cookie = `; ${document.cookie}`; //gets the cookie
   const parts = cookie.split(`; ${name}=`);
+
   if (parts.length === 2) {
-    return parts.pop().split(';').shift;
+    return parts.pop().split(';').shift();
   }
   return null
 }
 
 async function fetchPlaces(token) {
-  const places = await fetch('http://127.0.0.1:5000/v1/place/all', {
+  try{
+    const response = await fetch('http://127.0.0.1:5000/v1/place/all', {
     method: 'GET',
-    body: {'content-type': 'application/json'},
-    bearer: `{Authentication: ${token}}`, //authenticates token to fetch data
-    body: '', //empty for now, should fetch place data
-  })
+    headers: {"Content-Type": 'application/json', 
+                'Authorization' : `Bearer ${token}`
+    }
+  });
+  if (!response.ok) throw new Error ("Failed to fetch places")
+  
+  const places = await response.json();
+  displayPlaces(places);
+  } catch (error) {
+    console.error("Failed to fetch places", error);
+  }
 }
 
 function displayPlaces(places) {
-    /* clear the current content of the places list(the empty slots)
-    -> so, we would create an event to tap into the select the templates and make
-    an empty list in preparation for the children to be appended
+  const placeList = document.getElementById('place-list');
+  const template = document.getElementById("place-template");
+  placeList.InnerHTML = '';
 
+  places.forEach(place => {
+    const clone = template.content.cloneNode(true); //creates the div tag for places
 
-    iterate over the place data with 'places.forEACH' or with 'for place of places'
-    
-    create a div for each place and set its contents there with element.textContent
-    append the created element to the new list with appendChild */
+    clone.querySelector('.place-name').textContent = place.name;
+    clone.querySelector('.place-price').textContent = place.price;
+    //clone.querySelector('amenities').textContent = place.amenities;
+
+    const placeDiv = clone.querySelector('.place');
+    placeDiv.setAttribute('place-price', place.price)
+
+    placeList.appendChild(clone)
+  });
 }
 
 document.getElementById('place-filter').addEventListener('change', (event) => {
     //get the selected place value
     //iterate over the places and show/hide them based on selected prices
+
+  const selectedPrice = parseInt(event.target.value);
+  const places = document.querySelectorAll('.place-card');
+
+  places.forEach(place => {
+    const price = parseInt(place.getAttribute('place-price'));
+    place.style.display = price <= selectedPrice ? 'block' : 'none'; //determines if it fits the criteria or not
+  });
 })
 
-document.getElementById('amenity-filter').addEventListener('change', (event) => {
+/*document.getElementById('amenity-filter').addEventListener('change', (event) => {
     //get the selected amenity values and 
     //iterate over the places and show/hide them based on selected amenities
-})
+}) */
