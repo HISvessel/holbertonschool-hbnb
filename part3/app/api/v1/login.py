@@ -1,7 +1,8 @@
 """this module creates paths for user login authentication adn authorization"""
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask import jsonify, make_response
+from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity
 
 
 """this is our user API route model"""
@@ -26,6 +27,8 @@ class Login(Resource):
             identity=str(user.id),
             additional_claims={"is_admin":user.is_admin,
                                "email": user.email}) #passing a string and not a dictionary
+        response = make_response({"msg": "Login successful"}, 200)
+        set_access_cookies(response, access_token)
         return {"access_token": access_token}, 200
 
 """this endpoint was created for verification of token to grant user
@@ -35,4 +38,4 @@ class Protected(Resource):
     @jwt_required()
     def get(self):
         user = get_jwt_identity()
-        return {"message": f'Hello user {user["id"]}'}, 200
+        return {"message": f"Hello user {user['id']}"}, 200
