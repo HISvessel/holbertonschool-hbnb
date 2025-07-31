@@ -15,13 +15,14 @@ const message = document.getElementById('message');
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ email, password }),
-                //credentials: 'include' //including token for credentials
+                credentials: 'include' //including token for credentials
             });
                 
             const result = await response.json()
             if(response.ok) {
                 alert('Login successful')
                 document.cookie = `token=${result.access_token}; path=/`;
+                console.log("Confirming cookie generation:", document.cookie) //temporary
                 window.location.href = 'index.html';
 
             }

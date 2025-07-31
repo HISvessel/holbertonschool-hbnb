@@ -4,8 +4,9 @@ function checkAuthentication() {
 
   if (!token) {
     loginLink.style.display = 'block';
-    console.log("Cookies not fetched")
+    console.log("Cookies not fetched.")
   } else {
+    console.log('We made it: cookie generated and fetched');
     loginLink.style.display = `none`; //we will attempt to reveal the user's name
     fetchPlaces(token);
   }
@@ -20,6 +21,10 @@ function getCookie(name) {
   }
   return null
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    checkAuthentication();
+});
 
 async function fetchPlaces(token) {
   try{
