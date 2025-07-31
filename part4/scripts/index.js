@@ -46,7 +46,7 @@ async function fetchPlaces(token) {
 function displayPlaces(places) {
   const placeList = document.getElementById('place-list');
   const template = document.getElementById("place-template");
-  placeList.InnerHTML = '';
+  placeList.innerHTML = '';
 
   places.forEach(place => {
     const clone = template.content.cloneNode(true); //creates the div tag for places
@@ -55,7 +55,7 @@ function displayPlaces(places) {
     clone.querySelector('.place-price').textContent = place.price;
     //clone.querySelector('amenities').textContent = place.amenities;
 
-    const placeDiv = clone.querySelector('.place');
+    const placeDiv = clone.querySelector('.place-card');
     placeDiv.setAttribute('place-price', place.price)
 
     placeList.appendChild(clone)

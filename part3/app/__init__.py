@@ -21,7 +21,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     CORS(app, supports_credentials=True, origins=['http://127.0.0.1:5500'])
     my_api = Api(app, version='1.0', title='Hbnb API', description='Hbnb Application API', url_prefix='/api/v1')
     app.config.from_object(config_class)
-    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
     app.config['JWT_COOKIE_SECURE'] = False  # Set True for HTTPS only
     app.config['JWT_COOKIE_HTTPONLY'] = True
     app.config['JWT_COOKIE_SAMESITE'] = 'Lax'  # Or 'Strict' / 'None'
