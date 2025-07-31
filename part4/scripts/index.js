@@ -51,7 +51,7 @@ function displayPlaces(places) {
   places.forEach(place => {
     const clone = template.content.cloneNode(true); //creates the div tag for places
 
-    clone.querySelector('.place-name').textContent = place.name;
+    clone.querySelector('.place-name').textContent = place.title;
     clone.querySelector('.place-price').textContent = place.price;
     //clone.querySelector('amenities').textContent = place.amenities;
 
@@ -62,12 +62,12 @@ function displayPlaces(places) {
   });
 }
 
-document.getElementById('place-filter').addEventListener('change', (event) => {
+document.getElementById('price-filter').addEventListener('change', (event) => {
     //get the selected place value
     //iterate over the places and show/hide them based on selected prices
 
   const selectedPrice = parseInt(event.target.value);
-  const places = document.querySelectorAll('.place-card');
+  const places = document.querySelectorAll('.place-list');
 
   places.forEach(place => {
     const price = parseInt(place.getAttribute('place-price'));
