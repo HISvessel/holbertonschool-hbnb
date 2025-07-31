@@ -8,8 +8,7 @@ const message = document.getElementById('message');
 
         const email = document.getElementById('email').value.trim()
         const password = document.getElementById('password').value.trim()
-        const userAccountButton = document.getElementById('login-link') //gets the login button
-
+       
         console.log(email, password)
         try {
             const response = await fetch('http://127.0.0.1:5000/v1/user/login', {
@@ -18,15 +17,13 @@ const message = document.getElementById('message');
                 body: JSON.stringify({ email, password }),
                 //credentials: 'include' //including token for credentials
             });
-
+                
+            const result = await response.json()
             if(response.ok) {
-                const result = await response.json()
                 alert('Login successful')
                 document.cookie = `token=${result.access_token}; path=/`;
                 window.location.href = 'index.html';
 
-                //attempting to convert login button to now say the user's name
-                userAccountButton.innerHTML = `<li>${result.name}</li>`; //does not work yet
             }
             else {
                 message.textContent = `Error type: ${result.error}`;
