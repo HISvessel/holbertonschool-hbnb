@@ -1,8 +1,10 @@
 """this module creates paths for user login authentication adn authorization"""
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask import jsonify, make_response
-from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity
+from flask import make_response
+from models.revoked_token import RevokedToken
+from app import db
+from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, unset_jwt_cookies, get_jwt
 
 
 """this is our user API route model"""
@@ -30,6 +32,17 @@ class Login(Resource):
         response = make_response({"msg": "Login successful"}, 200)
         set_access_cookies(response, access_token)
         return {"access_token": access_token}, 200
+
+auth_api.route('/logout')
+class Logout(Resource):
+    @jwt_required()
+    def post(self):
+        jt1 = get_jwt_identity
+        db.session.add(RevokedToken(jt1=jt1))
+        db.session.commit()
+        response = make_response({"message": "successfully logged out"}, 200)
+        unset_jwt_cookies(response)
+        return response
 
 """this endpoint was created for verification of token to grant user
 access to account details and for managing of queries"""

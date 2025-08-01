@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_restx import Api
 from app.extensions.extensions import db
+from app.models.revoked_token import RevokedToken
 from app.api.v1.user import user_api
 from app.api.v1.amenity import amenity_api
 from app.api.v1.places import place_api
@@ -9,12 +10,13 @@ from app.api.v1.review import review_api
 from app.api.v1.login import auth_api
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from datetime import timedelta
+from flask_migrate import Migrate
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
+
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
@@ -30,6 +32,12 @@ def create_app(config_class="config.DevelopmentConfig"):
     bcrypt.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
+    Migrate(app, db)
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_revoked(jwt_header, jwt_payload):
+        jt1 = jwt_payload('jt1')
+        return db.session.query(RevokedToken.id).filter_by(jt1=jt1).scalar() is not None #checks if it taps the database
     
     #Placeholder for API namespace(endpoints will be added later)
     #additional namespaces for places, reviews, and ammenities will be added later
