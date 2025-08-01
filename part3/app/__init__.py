@@ -32,8 +32,12 @@ def create_app(config_class="config.DevelopmentConfig"):
     bcrypt.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
-    Migrate(app, db)
 
+    from app.models import revoked_token
+    Migrate(app, db)
+    print(db.Model.metadata.tables.keys())
+    
+    
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload):
         jti = jwt_payload['jti']

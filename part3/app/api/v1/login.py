@@ -33,7 +33,7 @@ class Login(Resource):
         set_access_cookies(response, access_token)
         return {"access_token": access_token}, 200
 
-auth_api.route('/logout')
+@auth_api.route('/logout')
 class Logout(Resource):
     @jwt_required()
     def post(self):
