@@ -68,11 +68,11 @@ function populatePriceFilter() {
   const priceFilter = document.getElementById('price-filter');
 
   priceFilter.innerHTML = '';
-  const prices = new set();
+  const prices = new Set();
 
   places.forEach(place => {
-    const price = parseInt(place.getAttribute('place.price'));
-    if (typeof number(price)) {
+    const price = parseInt(place.getAttribute('place-price'));
+    if (!isNan(price)) {
       prices.add(price)
     }
   });
@@ -84,7 +84,7 @@ function populatePriceFilter() {
   defaultOption.textContent= 'Any Price';
   priceFilter.appendChild(defaultOption);
 
-  priceFilter.forEach(price => {
+  sortedPrices.forEach(price => {
     const option = document.createElement('option');
     option.value = price;
     option.textContent = `${price}`;
@@ -96,13 +96,14 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
     //get the selected place value
     //iterate over the places and show/hide them based on selected prices
 
-  const selectedPrice = parseInt(event.target.value);
+  /*const selectedPrice = parseInt(event.target.value);
   const places = document.querySelectorAll('.place-list');
 
   places.forEach(place => {
     const price = parseInt(place.getAttribute('place-price'));
     place.style.display = price <= selectedPrice ? 'block' : 'none'; //determines if it fits the criteria or not
-  });
+  }); */
+  populatePriceFilter()
 })
 
 /*document.getElementById('amenity-filter').addEventListener('change', (event) => {
