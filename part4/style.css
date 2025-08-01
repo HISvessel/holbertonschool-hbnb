@@ -68,7 +68,7 @@ footer {
 
 /* Place details */
 .place-card {
-    background-color: white;
+    background-color: rgb(78, 78, 78);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     padding: 1.5em;
@@ -80,14 +80,20 @@ footer {
     color: #2a7ae2;
 }
 
+.place-card h3 {
+    color: #bb2424;
+}
+
 .place-card p {
     margin-bottom: 0.3em;
+    font-weight: bold;
+    color: #bb2424
 }
 
 .details-button {
     margin-top: 1em;
     padding: 0.5em 1em;
-    background-color: #2a7ae2;
+    background-color: #e0eeff;
     color: white;
     border: none;
     border-radius: 5px;
@@ -95,7 +101,7 @@ footer {
 }
 
 .details-button:hover {
-    background-color: #1d5bbf;
+    background-color: #bb2424; /*reset to 1e5ab9*/
 }
 
 /* Place details */

@@ -7,9 +7,14 @@ function checkAuthentication() {
     console.log("Cookies not fetched.")
   } else {
     console.log('We made it: cookie generated and fetched');
-    loginLink.style.display = `none`; //we will attempt to reveal the user's name
+    loginLink.style.display = `block`; //we will attempt to reveal the user's name
     fetchPlaces(token);
-    setupPriceFilter();
+    setupPriceFilter()
+    /*loginLink.addEventListener("click", async () => {
+      try{
+
+      } catch {}
+    }); */
   }
 }
 
@@ -54,12 +59,11 @@ function displayPlaces(places) {
     const clone = template.content.cloneNode(true); //creates the div tag for places
 
     clone.querySelector('.place-name').textContent = place.title;
-    clone.querySelector('.place-price').textContent = place.price;
+    clone.querySelector('.place-price').textContent = `Price: ${place.price}`;
     //clone.querySelector('amenities').textContent = place.amenities;
 
     const placeDiv = clone.querySelector('.place-card');
     placeDiv.setAttribute('data-price', place.price);
-
     placeList.appendChild(clone);
   });
 }
@@ -94,7 +98,7 @@ function setupPriceFilter() {
       const cardPrice = parseInt(card.getAttribute("data-price"));
       if (!selectedPrice || cardPrice <= selectedPrice) {
         card.style.display = ''
-        console.log("Prices match!");
+        console.log("Found a match for the filter!");
       } else {
         card.style.display = 'none';
         console.log("No matches found for filter");
