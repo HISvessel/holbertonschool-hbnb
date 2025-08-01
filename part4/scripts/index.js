@@ -9,6 +9,7 @@ function checkAuthentication() {
     console.log('We made it: cookie generated and fetched');
     loginLink.style.display = `none`; //we will attempt to reveal the user's name
     fetchPlaces(token);
+    populatePriceFilter();
   }
 }
 
@@ -59,6 +60,35 @@ function displayPlaces(places) {
     placeDiv.setAttribute('place-price', place.price)
 
     placeList.appendChild(clone)
+  });
+}
+
+function populatePriceFilter() {
+  const places = document.querySelectorAll('.place-list');
+  const priceFilter = document.getElementById('price-filter');
+
+  priceFilter.innerHTML = '';
+  const prices = new set();
+
+  places.forEach(place => {
+    const price = parseInt(place.getAttribute('place.price'));
+    if (typeof number(price)) {
+      prices.add(price)
+    }
+  });
+
+  const sortedPrices = Array.from(prices).sort((a, b) => a - b)
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent= 'Any Price';
+  priceFilter.appendChild(defaultOption);
+
+  priceFilter.forEach(price => {
+    const option = document.createElement('option');
+    option.value = price;
+    option.textContent = `${price}`;
+    priceFilter.appendChild(option);
   });
 }
 
