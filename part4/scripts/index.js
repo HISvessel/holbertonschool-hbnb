@@ -85,9 +85,10 @@ function setupPriceFilter() {
     select.appendChild(option);
   });
 
-  select.addEventListener('change', (event) => {
+  if (!select.dataset.listenerAdded) {
+      select.addEventListener('change', (event) => {
     const selectedPrice = parseInt(event.target.value);
-    const cards = document.querySelectorAll('place-list .place-card');
+    const cards = document.querySelectorAll('#place-list .place-card');
 
     cards.forEach(card => {
       const cardPrice = parseInt(card.getAttribute("data-price"));
@@ -98,10 +99,10 @@ function setupPriceFilter() {
         card.style.display = 'none';
         console.log("No display")
       }
-    })
+    });
   });
-
-  priceContainer.appendChild(select);
+  select.dataset.listenerAdded = true;
+  }
 }
 
 
