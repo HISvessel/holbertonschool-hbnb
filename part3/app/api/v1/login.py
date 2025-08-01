@@ -3,7 +3,7 @@ from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import make_response
 from app.models.revoked_token import RevokedToken
-from app import db
+from app.extensions.extensions import db
 from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, unset_jwt_cookies, get_jwt
 
 
@@ -37,8 +37,9 @@ auth_api.route('/logout')
 class Logout(Resource):
     @jwt_required()
     def post(self):
-        jt1 = get_jwt_identity
-        db.session.add(RevokedToken(jt1=jt1))
+        jti = get_jwt()["jti"]
+        revoked_token = RevokedToken(jti=jti)
+        db.session.add(revoked_token)
         db.session.commit()
         response = make_response({"message": "successfully logged out"}, 200)
         unset_jwt_cookies(response)

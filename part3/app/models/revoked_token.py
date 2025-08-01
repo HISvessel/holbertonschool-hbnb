@@ -8,3 +8,8 @@ class RevokedToken(db.Model):
 
     def __repr__(self):
         return f'<RevokedToken {self.jti}>'
+    
+    @classmethod
+    def is_jti_blacklisted(cls, jti):
+        query = cls.query.filter_by(jti=jti).first()
+        return bool(query)

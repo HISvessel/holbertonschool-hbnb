@@ -36,8 +36,8 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload):
-        jt1 = jwt_payload('jt1')
-        return db.session.query(RevokedToken.id).filter_by(jt1=jt1).scalar() is not None #checks if it taps the database
+        jti = jwt_payload['jti']
+        return RevokedToken.is_jti_blacklisted(jti)
     
     #Placeholder for API namespace(endpoints will be added later)
     #additional namespaces for places, reviews, and ammenities will be added later
