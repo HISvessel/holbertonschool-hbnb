@@ -2,7 +2,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import make_response
-from models.revoked_token import RevokedToken
+from app.models.revoked_token import RevokedToken
 from app import db
 from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, unset_jwt_cookies, get_jwt
 
