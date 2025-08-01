@@ -9,7 +9,7 @@ function checkAuthentication() {
     console.log('We made it: cookie generated and fetched');
     loginLink.style.display = `none`; //we will attempt to reveal the user's name
     fetchPlaces(token);
-    populatePriceFilter();
+    setupPriceFilter();
   }
 }
 
@@ -39,6 +39,7 @@ async function fetchPlaces(token) {
   
   const places = await response.json();
   displayPlaces(places);
+  setupPriceFilter();
   } catch (error) {
     console.error("Failed to fetch places", error);
   }
@@ -57,54 +58,52 @@ function displayPlaces(places) {
     //clone.querySelector('amenities').textContent = place.amenities;
 
     const placeDiv = clone.querySelector('.place-card');
-    placeDiv.setAttribute('place-price', place.price)
+    placeDiv.setAttribute('data-price', place.price);
 
-    placeList.appendChild(clone)
+    placeList.appendChild(clone);
   });
 }
 
-function populatePriceFilter() {
-  const places = document.querySelectorAll('.place-list');
-  const priceFilter = document.getElementById('price-filter');
 
-  priceFilter.innerHTML = '';
-  const prices = new Set();
-
-  places.forEach(place => {
-    const price = parseInt(place.getAttribute('place-price'));
-    if (!isNan(price)) {
-      prices.add(price)
-    }
-  });
-
-  const sortedPrices = Array.from(prices).sort((a, b) => a - b)
-
+function setupPriceFilter() {
+  const priceContainer = document.getElementById('price-filter');
+  priceContainer.innerHTML = '';
+  
   const defaultOption = document.createElement('option');
-  defaultOption.value = '';
-  defaultOption.textContent= 'Any Price';
-  priceFilter.appendChild(defaultOption);
+  defaultOption.textContent = 'Any Price';
+  defaultOption.value= '';
+  
+  const select = document.getElementById("price-filter");
+  select.appendChild(defaultOption);
 
-  sortedPrices.forEach(price => {
+
+  const priceOptions = [50, 100, 200, 300, 400, 500];
+  priceOptions.forEach(price => {
     const option = document.createElement('option');
     option.value = price;
     option.textContent = `${price}`;
-    priceFilter.appendChild(option);
+    select.appendChild(option);
   });
+
+  select.addEventListener('change', (event) => {
+    const selectedPrice = parseInt(event.target.value);
+    const cards = document.querySelectorAll('place-list .place-card');
+
+    cards.forEach(card => {
+      const cardPrice = parseInt(card.getAttribute("data-price"));
+      if (!selectedPrice || cardPrice === selectedPrice) {
+        card.style.display = ''
+        console.log("No prices");
+      } else {
+        card.style.display = 'none';
+        console.log("No display")
+      }
+    })
+  });
+
+  priceContainer.appendChild(select);
 }
 
-document.getElementById('price-filter').addEventListener('change', (event) => {
-    //get the selected place value
-    //iterate over the places and show/hide them based on selected prices
-
-  /*const selectedPrice = parseInt(event.target.value);
-  const places = document.querySelectorAll('.place-list');
-
-  places.forEach(place => {
-    const price = parseInt(place.getAttribute('place-price'));
-    place.style.display = price <= selectedPrice ? 'block' : 'none'; //determines if it fits the criteria or not
-  }); */
-  populatePriceFilter()
-})
 
 /*document.getElementById('amenity-filter').addEventListener('change', (event) => {
     //get the selected amenity values and 
