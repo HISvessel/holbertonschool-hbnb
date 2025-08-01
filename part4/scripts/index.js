@@ -94,10 +94,10 @@ function setupPriceFilter() {
       const cardPrice = parseInt(card.getAttribute("data-price"));
       if (!selectedPrice || cardPrice <= selectedPrice) {
         card.style.display = ''
-        console.log("No prices");
+        console.log("Prices match!");
       } else {
         card.style.display = 'none';
-        console.log("No display")
+        console.log("No matches found for filter");
       }
     });
   });
