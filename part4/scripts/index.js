@@ -92,7 +92,7 @@ function setupPriceFilter() {
 
     cards.forEach(card => {
       const cardPrice = parseInt(card.getAttribute("data-price"));
-      if (!selectedPrice || cardPrice === selectedPrice) {
+      if (!selectedPrice || cardPrice <= selectedPrice) {
         card.style.display = ''
         console.log("No prices");
       } else {
