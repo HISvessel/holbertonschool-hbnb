@@ -12,6 +12,7 @@ function checkAuthentication() {
     const logoutLink = document.createElement('a');
     logoutLink.textContent = 'Logout';
     logoutLink.href= '#';
+    logoutLink.id = 'logout-link';
     loginLink.appendChild(logoutLink);
     fetchPlaces(token);
   }
@@ -26,25 +27,6 @@ function getCookie(name) {
   }
   return null
 }
-/*
-function getLogoutButton() {
-  const logoutLink = document.getElementById('login-link')
-  logoutLink.innerHTML = '';
-
-  const button = document.createElement('button');
-  button.id = 'logout-link';
-
-  checkAuthentication().then(isLoggedIn => {
-    if (isLoggedIn) {
-      button.textContent = 'Logout';
-      button.onclick = logoutUser;
-    } else {
-      button.textContent = "Login";
-      button.onclick = () => window.location.href = 'login.html';
-    }
-    logoutLink.appendChild(button);
-  });
-} */
 
 async function logoutUser() {
   const logoutLink = document.getElementById('logout-link')
@@ -60,9 +42,11 @@ async function logoutUser() {
     try{
       const response = await fetch("http://localhost:5000/v1/auth/logout", {
         method: "POST",
-        header: {                                                                                                          "Content-Type": "application/json",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
-        },
+        }
       });
 
       if (response.ok) {
@@ -83,12 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function fetchPlaces(token) {
+
   try{
     console.log("Fetching places")
     const response = await fetch('http://127.0.0.1:5000/v1/place/all', {
     method: 'GET',
-    headers: {"Content-Type": 'application/json',
-                'Authorization': `Bearer ${token}`
+    header: {'Authorization': `Bearer ${token}`
     }
   });
   if (!response.ok) throw new Error ("Cannot fetch places. Response not recieved!")
