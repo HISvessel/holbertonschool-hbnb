@@ -14,7 +14,6 @@ function checkAuthentication() {
     logoutLink.href= '#';
     loginLink.appendChild(logoutLink);
     fetchPlaces(token);
-    //setupPriceFilter();
   }
 }
 
@@ -45,29 +44,42 @@ function getLogoutButton() {
     }
     logoutLink.appendChild(button);
   });
-}
+} */
 
 async function logoutUser() {
-  try{
-    const response = await fetch("http://localhost:5000/v1/auth/logout", {
-      method: "POST",
-      credentials: "include"
-    });
+  const logoutLink = document.getElementById('logout-link')
+  logoutLink.addEventListener('click', async function(event) {
+    event.preventDefault();
 
-    if (response.ok) {
-      console.log("User logged out");
-      alert("You have logged out. Goodbye.", + response.statusText)
-      getLogoutButton()
-    } else {
-      console.error("Logout failed");
+    const token = getCookie('token');
+    if (!token) {
+      console.warn("No token here");
+      return;
     }
-  } catch (error) {
-    console.error("Error logging out:", error)
-  }
+
+    try{
+      const response = await fetch("http://localhost:5000/v1/auth/logout", {
+        method: "POST",
+        header: {                                                                                                          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+
+      if (response.ok) {
+        console.log("User logged out");
+        alert("You have logged out. Goodbye.", + response.statusText)
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error)
+    }
+  });
 }
-*/
+
 document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
+    logoutUser();
 });
 
 async function fetchPlaces(token) {
