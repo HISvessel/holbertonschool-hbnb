@@ -93,8 +93,9 @@ footer {
 .details-button {
     margin-top: 1em;
     padding: 0.5em 1em;
-    background-color: #e0eeff;
+    background-color: #be6969;
     color: white;
+
     border: none;
     border-radius: 5px;
     cursor: pointer;

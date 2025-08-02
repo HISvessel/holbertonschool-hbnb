@@ -4,17 +4,17 @@ function checkAuthentication() {
 
   if (!token) {
     loginLink.style.display = 'block';
-    console.log("Cookies not fetched.")
+    console.log("Cookies not fetched. User, please login!")
   } else {
-    console.log('We made it: cookie generated and fetched');
-    loginLink.style.display = `block`; //we will attempt to reveal the user's name
+    console.log('We made it: cookie generated and fetched!');
+    console.log("token is:", token) // checking token
+    loginLink.innerHTML = '';
+    const logoutLink = document.createElement('a');
+    logoutLink.textContent = 'Logout';
+    logoutLink.href= '#';
+    loginLink.appendChild(logoutLink);
     fetchPlaces(token);
-    setupPriceFilter()
-    /*loginLink.addEventListener("click", async () => {
-      try{
-
-      } catch {}
-    }); */
+    //setupPriceFilter();
   }
 }
 
@@ -27,26 +27,66 @@ function getCookie(name) {
   }
   return null
 }
+/*
+function getLogoutButton() {
+  const logoutLink = document.getElementById('login-link')
+  logoutLink.innerHTML = '';
 
+  const button = document.createElement('button');
+  button.id = 'logout-link';
+
+  checkAuthentication().then(isLoggedIn => {
+    if (isLoggedIn) {
+      button.textContent = 'Logout';
+      button.onclick = logoutUser;
+    } else {
+      button.textContent = "Login";
+      button.onclick = () => window.location.href = 'login.html';
+    }
+    logoutLink.appendChild(button);
+  });
+}
+
+async function logoutUser() {
+  try{
+    const response = await fetch("http://localhost:5000/v1/auth/logout", {
+      method: "POST",
+      credentials: "include"
+    });
+
+    if (response.ok) {
+      console.log("User logged out");
+      alert("You have logged out. Goodbye.", + response.statusText)
+      getLogoutButton()
+    } else {
+      console.error("Logout failed");
+    }
+  } catch (error) {
+    console.error("Error logging out:", error)
+  }
+}
+*/
 document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
 });
 
 async function fetchPlaces(token) {
   try{
+    console.log("Fetching places")
     const response = await fetch('http://127.0.0.1:5000/v1/place/all', {
     method: 'GET',
-    headers: {"Content-Type": 'application/json', 
-                'Authorization' : `Bearer ${token}`
+    headers: {"Content-Type": 'application/json',
+                'Authorization': `Bearer ${token}`
     }
   });
-  if (!response.ok) throw new Error ("Failed to fetch places")
+  if (!response.ok) throw new Error ("Cannot fetch places. Response not recieved!")
   
   const places = await response.json();
   displayPlaces(places);
   setupPriceFilter();
+  console.log("Places have been fetched")
   } catch (error) {
-    console.error("Failed to fetch places", error);
+    console.error("Could not fetch", error); //this error is being thrown
   }
 }
 
@@ -60,12 +100,13 @@ function displayPlaces(places) {
 
     clone.querySelector('.place-name').textContent = place.title;
     clone.querySelector('.place-price').textContent = `Price: ${place.price}`;
-    //clone.querySelector('amenities').textContent = place.amenities;
 
     const placeDiv = clone.querySelector('.place-card');
     placeDiv.setAttribute('data-price', place.price);
     placeList.appendChild(clone);
   });
+
+  console.log("Displaying places")
 }
 
 

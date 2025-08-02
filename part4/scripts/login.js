@@ -18,7 +18,7 @@ const logoutForm = document.getElementById("login-form");
                 body: JSON.stringify({ email, password }),
                 credentials: 'include' //including token for credentials
             });
-                
+
             const result = await response.json()
             if(response.ok) {
                 alert('Login successful')
