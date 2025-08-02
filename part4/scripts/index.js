@@ -61,6 +61,21 @@ async function logoutUser() {
   });
 }
 
+
+
+/* This function is for manually ending session by forcibly expiring cookies*/
+document.cookie.split(";").forEach(cookie => {
+  const name = cookie.split("=")[0].trim();
+  document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+});
+
+
+/* function ends here*/
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
     logoutUser();
