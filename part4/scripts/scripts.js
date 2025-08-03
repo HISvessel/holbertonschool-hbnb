@@ -59,12 +59,18 @@ function checkAuthentication() {
 
   if (!token) {
     loginLink.style.display = 'block';
-    console.log("Cookies not fetched.")
+    console.log("Cookies not fetched. User, please login!")
   } else {
-    console.log('We made it: cookie generated and fetched');
-    loginLink.style.display = `none`; //we will attempt to reveal the user's name
+    console.log('We made it: cookie generated and fetched!');
+    console.log("token is:", token) // checking token
+    loginLink.innerHTML = '';
+    const logoutLink = document.createElement('a');
+    logoutLink.textContent = 'Logout';
+    logoutLink.href= '#';
+    logoutLink.id = 'logout-link';
+    loginLink.appendChild(logoutLink);
+    logoutUser();
     fetchPlaces(token);
-    setupPriceFilter();
   }
 }
 
@@ -78,25 +84,80 @@ function getCookie(name) {
   return null
 }
 
+async function logoutUser() {
+  const logoutLink = document.getElementById('logout-link')
+  logoutLink.addEventListener('click', async function(event) {
+    event.preventDefault();
+
+    if (!logoutLink) {
+      console.warn("Logout link not rendered, skipping setup");
+      return;
+    }
+    const token = getCookie('token');
+    if (!token) {
+      console.warn("No token here");
+      return;
+    }
+
+    try{
+      const response = await fetch("http://127.0.0.1:5000/v1/auth/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        console.log("User logged out");
+        alert("You have logged out. Goodbye.", + response.statusText)
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error)
+    }
+  });
+}
+
+
+
+/* This function is for manually ending session by forcibly expiring cookies*/
+document.cookie.split(";").forEach(cookie => {
+  const name = cookie.split("=")[0].trim();
+  document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
+});
+
+
+/* function ends here*/
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
+    //logoutUser();
 });
 
 async function fetchPlaces(token) {
+
   try{
+    console.log("Fetching places")
     const response = await fetch('http://127.0.0.1:5000/v1/place/all', {
     method: 'GET',
-    headers: {"Content-Type": 'application/json', 
-                'Authorization' : `Bearer ${token}`
+    header: {'Authorization': `Bearer ${token}`
     }
   });
-  if (!response.ok) throw new Error ("Failed to fetch places")
+  if (!response.ok) throw new Error ("Cannot fetch places. Response not recieved!")
   
   const places = await response.json();
   displayPlaces(places);
   setupPriceFilter();
+  console.log("Places have been fetched")
   } catch (error) {
-    console.error("Failed to fetch places", error);
+    console.error("Could not fetch", error); //this error is being thrown
   }
 }
 
@@ -109,14 +170,14 @@ function displayPlaces(places) {
     const clone = template.content.cloneNode(true); //creates the div tag for places
 
     clone.querySelector('.place-name').textContent = place.title;
-    clone.querySelector('.place-price').textContent = place.price;
-    //clone.querySelector('amenities').textContent = place.amenities;
+    clone.querySelector('.place-price').textContent = `Price: ${place.price}`;
 
     const placeDiv = clone.querySelector('.place-card');
     placeDiv.setAttribute('data-price', place.price);
-
     placeList.appendChild(clone);
   });
+
+  console.log("Displaying places")
 }
 
 
@@ -149,7 +210,7 @@ function setupPriceFilter() {
       const cardPrice = parseInt(card.getAttribute("data-price"));
       if (!selectedPrice || cardPrice <= selectedPrice) {
         card.style.display = ''
-        console.log("Prices match!");
+        console.log("Found a match for the filter!");
       } else {
         card.style.display = 'none';
         console.log("No matches found for filter");
