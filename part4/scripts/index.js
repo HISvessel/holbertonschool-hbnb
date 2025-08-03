@@ -2,7 +2,7 @@ function checkAuthentication() {
   const token = getCookie('token');
   const loginLink = document.getElementById('login-link')
 
-  if (!token) {
+  if (token) {
     loginLink.style.display = 'block';
     console.log("Cookies not fetched. User, please login!")
   } else {
@@ -14,6 +14,7 @@ function checkAuthentication() {
     logoutLink.href= '#';
     logoutLink.id = 'logout-link';
     loginLink.appendChild(logoutLink);
+    logoutUser()
     fetchPlaces(token);
   }
 }
@@ -33,6 +34,10 @@ async function logoutUser() {
   logoutLink.addEventListener('click', async function(event) {
     event.preventDefault();
 
+    if (!logoutLink) {
+      console.warn("Logout link not rendered, skipping setup");
+      return;
+    }
     const token = getCookie('token');
     if (!token) {
       console.warn("No token here");
@@ -78,7 +83,7 @@ document.cookie.split(";").forEach(cookie => {
 
 document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
-    logoutUser();
+    //logoutUser();
 });
 
 async function fetchPlaces(token) {
