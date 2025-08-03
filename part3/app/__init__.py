@@ -25,7 +25,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     app.config.from_object(config_class)
     app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
     app.config['JWT_COOKIE_SECURE'] = False  # Set True for HTTPS only
-    app.config['JWT_COOKIE_HTTPONLY'] = True
+    app.config['JWT_COOKIE_HTTPONLY'] = False #watch behaviour, change back to true
     app.config['JWT_COOKIE_SAMESITE'] = 'Lax'  # Or 'Strict' / 'None'
     app.config['JWT_ACCESS_COOKIE_PATH'] = '/'  # Optional
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)

@@ -2,7 +2,7 @@ function checkAuthentication() {
   const token = getCookie('token');
   const loginLink = document.getElementById('login-link')
 
-  if (token) {
+  if (!token) {
     loginLink.style.display = 'block';
     console.log("Cookies not fetched. User, please login!")
   } else {
@@ -14,7 +14,7 @@ function checkAuthentication() {
     logoutLink.href= '#';
     logoutLink.id = 'logout-link';
     loginLink.appendChild(logoutLink);
-    logoutUser()
+    logoutUser();
     fetchPlaces(token);
   }
 }
@@ -45,7 +45,7 @@ async function logoutUser() {
     }
 
     try{
-      const response = await fetch("http://localhost:5000/v1/auth/logout", {
+      const response = await fetch("http://127.0.0.1:5000/v1/auth/logout", {
         method: "POST",
         credentials: "include",
         headers: {
