@@ -57,6 +57,10 @@ function checkAuthentication() {
   const token = getCookie('token');
   const loginLink = document.getElementById('login-link')
 
+  if (!loginLink) {
+    console.warn("The login link is not present here");
+    return;
+  }
   if (!token) {
     loginLink.style.display = 'block';
     console.log("Cookies not fetched. User, please login!")
@@ -104,14 +108,14 @@ async function logoutUser() {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "application/json"
+          //"Authorization": `Bearer ${token}` watch for behavior
         }
       });
 
       if (response.ok) {
         console.log("User logged out");
-        alert("You have logged out. Goodbye.", + response.statusText)
+        alert("You have logged out. Goodbye." + response.statusText)
       } else {
         console.error("Logout failed");
       }
@@ -123,14 +127,15 @@ async function logoutUser() {
 
 
 
-/* This function is for manually ending session by forcibly expiring cookies*/
+/* This function is for manually ending session by forcibly expiring cookies
+
 document.cookie.split(";").forEach(cookie => {
   const name = cookie.split("=")[0].trim();
   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;';
 });
 
 
-/* function ends here*/
+function ends here*/
 
 
 
@@ -147,8 +152,8 @@ async function fetchPlaces(token) {
     console.log("Fetching places")
     const response = await fetch('http://127.0.0.1:5000/v1/place/all', {
     method: 'GET',
-    header: {'Authorization': `Bearer ${token}`
-    }
+    //headers: {'Authorization': `Bearer ${token}`
+    //}
   });
   if (!response.ok) throw new Error ("Cannot fetch places. Response not recieved!")
   

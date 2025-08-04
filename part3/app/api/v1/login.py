@@ -31,9 +31,7 @@ class Login(Resource):
                                "email": user.email}) #passing a string and not a dictionary
         response = make_response({"msg": "Login successful"}, 200)
         set_access_cookies(response, access_token)
-
-        #watch for backend behaviour and cookie token storage
-        return response #{"access_token": access_token}, 200
+        return response
 
 @auth_api.route('/logout')
 class Logout(Resource):
